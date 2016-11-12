@@ -20,3 +20,8 @@ test:
 
 docs:
 	cd {{ docs_path }} && sphinx-build -W -b html -d _build/doctrees . _build/html
+
+assets:
+	pushd {{ assets_path }} && npm install && popd
+	pushd {{ assets_path }} && gulp && popd
+

@@ -427,6 +427,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 '{{ unstable_branch }}',
                 '{{ stable_branch }}',
                 '{{ docs_path }}',
+                '{{ assets_path }}',
                 '{{ website_path }}',
             ), array(
                 Inflector::ucwords(str_replace(array('-project', '/', '-'), array('', ' ', ' '), $package->getName())),
@@ -437,6 +438,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $unstableBranch,
                 $stableBranch,
                 $branchConfig['docs_path'],
+                $branchConfig['assets_path'],
                 str_replace(array(static::PACKAGIST_GROUP.'/', '-bundle'), '', $package->getName()),
             ), $localContent));
         }
