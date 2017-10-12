@@ -10,7 +10,9 @@
 
 Branch | Travis | Coveralls |
 ------ | ------ | --------- |
+{% if legacy_branch != stable_branch %}
 {{ legacy_branch }}   | [![Build Status][travis_legacy_badge]][travis_legacy_link]     | [![Coverage Status][coveralls_legacy_badge]][coveralls_legacy_link]     |
+{% endif %}
 {{ stable_branch }}   | [![Build Status][travis_stable_badge]][travis_stable_link]     | [![Coverage Status][coveralls_stable_badge]][coveralls_stable_link]     |
 {{ unstable_branch }} | [![Build Status][travis_unstable_badge]][travis_unstable_link] | [![Coverage Status][coveralls_unstable_badge]][coveralls_unstable_link] |
 
@@ -26,7 +28,7 @@ Branch | Travis | Coveralls |
 
 For the install guide and reference, see:
 
-* [{{ packagist_name }} Documentation](http://symfony.com/doc/master/cmf/bundles/{{ website_path }}/index.html)
+* [{{ packagist_name }} Documentation](http://symfony.com/doc/master/cmf/{{ docs_path }}/index.html)
 
 See also:
 
@@ -47,7 +49,7 @@ Unit and/or functional tests exist for this bundle. See the
 [Testing documentation](http://symfony.com/doc/master/cmf/components/testing.html)
 for a guide to running the tests.
 
-Thanks to 
+Thanks to
 [everyone who has contributed](contributors) already.
 
 ## License

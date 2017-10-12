@@ -490,19 +490,29 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $branchConfig = $projectConfig['branches'][$branchName];
         $localPathInfo = pathinfo($localPath);
+        reset($projectConfig['branches']);
+        $unstableBranch = key($projectConfig['branches']);
+        $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
+        $legacyBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $stableBranch;
         if (array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
             $distPath = dirname($distPath) . '/' . basename($distPath, '.twig');
             file_put_contents($distPath, $this->twig->render($localPath, array_merge(
                 $this->configs,
                 $projectConfig,
                 $branchConfig,
-                ['repository_name' => $repositoryName]
+                [
+                    'package_title' => Inflector::ucwords(str_replace(['cmf', '/', '-'], ['CMF', ' ', ' '], $package->getName())),
+                    'package_description' => $package->getDescription(),
+                    'packagist_name' => $package->getName(),
+                    'package_name' => $package->getName(),
+                    'repository_name' => $repositoryName,
+                    'current_branch' => $branchName,
+                    'unstable_branch' => $unstableBranch,
+                    'stable_branch' => $stableBranch,
+                    'legacy_branch' => $legacyBranch,
+                ]
             )));
         } else {
-            reset($projectConfig['branches']);
-            $unstableBranch = key($projectConfig['branches']);
-            $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
-            $legacyBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $stableBranch;
             file_put_contents($distPath, str_replace([
                 '{{ package_title }}',
                 '{{ package_description }}',
@@ -515,7 +525,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 '{{ docs_path }}',
                 '{{ website_path }}',
             ], [
-                Inflector::ucwords(str_replace(['-project', '/', '-'], ['', ' ', ' '], $package->getName())),
+                Inflector::ucwords(str_replace(['/', '-'], [' ', ' '], $package->getName())),
                 $package->getDescription(),
                 $package->getName(),
                 $repositoryName,
