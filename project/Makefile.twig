@@ -22,21 +22,32 @@ PACKAGE=symfony-cmf/seo-bundle
 
 list:
 	@echo 'test:                    will run all tests'
-	@echo 'test_unit:               will run unit tests only'
-	@echo 'test_integration_phpcr:  will run integration tests on PHPCR'
-	@echo 'test_integration_orm:    will run integration tests on ORM'
+{% if make_tasks.test_unit is defined %}	@echo 'test_unit:               will run unit tests only'{% endif %}
 
+{% if make_tasks.test_integration_phpcr is defined %}	@echo 'test_integration_phpcr:  will run integration tests on PHPCR'{% endif %}
+
+{% if make_tasks.test_integration_orm is defined %}	@echo 'test_integration_orm:    will run integration tests on ORM'{% endif %}
+
+
+{% if make_tasks.test_integration_phpcr is defined %}
 test_integration_phpcr:
 	./${TESTING_SCRIPTS_DIR}/make/test.sh -c${CONSOLE} -tintegration_phpcr
+{% endif %}
 
+{% if make_tasks.test_integration_orm is defined %}
 test_integration_orm:
 	./${TESTING_SCRIPTS_DIR}/make/test.sh -c${CONSOLE} -tintegration_orm
+{% endif %}
 
-
+{% if make_tasks.test_unit is defined %}
 test_unit:
 	./${TESTING_SCRIPTS_DIR}/make/test.sh -tunit
+{% endif %}
 
+{% if make_tasks.test_installation is defined %}
 test_installation:
 	./${TESTING_SCRIPTS_DIR}/make/test.sh -p${PACKAGE} -v${VERSION} -ttest_installation
+{% endif %}
 
-test: test_unit test_integration_phpcr test_integration_orm
+test:{% for test, value in make_tasks if test != 'test_installation' %} {{ test }}{% endfor %}
+
