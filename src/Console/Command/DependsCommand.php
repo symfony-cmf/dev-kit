@@ -40,7 +40,7 @@ final class DependsCommand extends AbstractCommand
         $branchDepth = intval($input->getOption('branch-depth'));
 
         foreach ($this->configs['projects'] as $name => $config) {
-            $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
+            $package = $this->packagistClient->get($this->packagistGroup.'/'.$name);
             $this->io->title($package->getName());
 
             $bd = 0;

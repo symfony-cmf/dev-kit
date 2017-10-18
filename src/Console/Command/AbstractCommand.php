@@ -28,11 +28,11 @@ use Symfony\Component\Yaml\Yaml;
  */
 abstract class AbstractCommand extends Command
 {
-    const GITHUB_GROUP = 'symfony-cmf';
-    const GITHUB_USER = 'electricmaxxx';
-    const GITHUB_EMAIL = 'maximilian.berghoff@gmx.de';
-    const PACKAGIST_GROUP = 'symfony-cmf';
-    const HOMEPAGE = 'http://cmf.symfony.com/';
+    protected $githubGroup;
+    protected $githubUser;
+    protected $githubEmail;
+    protected $packagistGroup;
+    protected $homepage;
 
     /**
      * @var SymfonyStyle
@@ -85,9 +85,12 @@ abstract class AbstractCommand extends Command
         ]);
         $this->configs = array_merge($devKitConfigs, $projectsConfigs);
 
-        if (getenv('GITHUB_OAUTH_TOKEN')) {
-            $this->githubAuthKey = getenv('GITHUB_OAUTH_TOKEN');
-        }
+        $this->githubAuthKey = getenv('GITHUB_OAUTH_TOKEN');
+        $this->githubGroup = getenv('GITHUB_GROUP');
+        $this->githubUser = getenv('GITHUB_USER');
+        $this->githubEmail = getenv('GITHUB_EMAIL');
+        $this->packagistGroup = getenv('PACKAGIST_GROUP');
+        $this->homepage = getenv('HOMEPAGE');
 
         $this->packagistClient = new \Packagist\Api\Client();
 

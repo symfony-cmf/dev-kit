@@ -80,7 +80,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         foreach ($this->projects as $name) {
             try {
-                $package = $this->packagistClient->get(static::PACKAGIST_GROUP . '/' . $name);
+                $package = $this->packagistClient->get($this->packagistGroup . '/' . $name);
                 $projectConfig = $this->configs['projects'][$name];
                 $this->io->title($package->getName());
                 $this->updateRepositories($package);
@@ -109,9 +109,9 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $repositoryName = $this->getRepositoryName($package);
         $this->io->section('Repository');
 
-        $repositoryInfo = $this->githubClient->repo()->show(static::GITHUB_GROUP, $repositoryName);
+        $repositoryInfo = $this->githubClient->repo()->show($this->githubGroup, $repositoryName);
         $infoToUpdate = [
-            'homepage' => self::HOMEPAGE,
+            'homepage' => $this->homepage,
             'has_issues' => true,
             'has_projects' => true,
             'has_wiki' => false,
@@ -131,7 +131,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $this->io->comment('Following info have to be changed: '.implode(', ', array_keys($infoToUpdate)).'.');
             if ($this->apply) {
                 $this->githubClient->repo()->update(
-                    static::GITHUB_GROUP,
+                    $this->githubGroup,
                     $repositoryName,
                     array_merge($infoToUpdate, ['name' => $repositoryName])
                 );
@@ -155,7 +155,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $headers = ['Name', 'Actual color', 'Needed Color', 'State'];
         $rows = [];
 
-        foreach ($this->githubClient->repo()->labels()->all(static::GITHUB_GROUP, $repositoryName) as $label) {
+        foreach ($this->githubClient->repo()->labels()->all($this->githubGroup, $repositoryName) as $label) {
             $name = $label['name'];
             $color = $label['color'];
 
@@ -171,12 +171,12 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             if (!$shouldExist) {
                 $state = 'Deleted';
                 if ($this->apply) {
-                    $this->githubClient->repo()->labels()->remove(static::GITHUB_GROUP, $repositoryName, $name);
+                    $this->githubClient->repo()->labels()->remove($this->githubGroup, $repositoryName, $name);
                 }
             } elseif ($shouldBeUpdated) {
                 $state = 'Updated';
                 if ($this->apply) {
-                    $this->githubClient->repo()->labels()->update(static::GITHUB_GROUP, $repositoryName, $name, [
+                    $this->githubClient->repo()->labels()->update($this->githubGroup, $repositoryName, $name, [
                         'name' => $name,
                         'color' => $configuredColor,
                     ]);
@@ -197,7 +197,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $color = $label['color'];
 
             if ($this->apply) {
-                $this->githubClient->repo()->labels()->create(static::GITHUB_GROUP, $repositoryName, [
+                $this->githubClient->repo()->labels()->create($this->githubGroup, $repositoryName, [
                     'name' => $name,
                     'color' => $color,
                 ]);
@@ -244,7 +244,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         // First, check if the hook exists.
         $devKitHook = null;
-        foreach ($this->githubClient->repo()->hooks()->all(static::GITHUB_GROUP, $repositoryName) as $hook) {
+        foreach ($this->githubClient->repo()->hooks()->all($this->githubGroup, $repositoryName) as $hook) {
             if (array_key_exists('url', $hook['config'])
                 && 0 === strncmp($hook['config']['url'], $hookBaseUrl, strlen($hookBaseUrl))) {
                 $devKitHook = $hook;
@@ -257,7 +257,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $this->io->comment('Has to be created.');
 
             if ($this->apply) {
-                $this->githubClient->repo()->hooks()->create(static::GITHUB_GROUP, $repositoryName, [
+                $this->githubClient->repo()->hooks()->create($this->githubGroup, $repositoryName, [
                     'name' => 'web',
                     'config' => $config,
                     'events' => $events,
@@ -272,13 +272,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $this->io->comment('Has to be updated.');
 
             if ($this->apply) {
-                $this->githubClient->repo()->hooks()->update(static::GITHUB_GROUP, $repositoryName, $devKitHook['id'], [
+                $this->githubClient->repo()->hooks()->update($this->githubGroup, $repositoryName, $devKitHook['id'], [
                     'name' => 'web',
                     'config' => $config,
                     'events' => $events,
                     'active' => true,
                 ]);
-                $this->githubClient->repo()->hooks()->ping(static::GITHUB_GROUP, $repositoryName, $devKitHook['id']);
+                $this->githubClient->repo()->hooks()->ping($this->githubGroup, $repositoryName, $devKitHook['id']);
                 $this->io->success('Hook updated.');
             }
         } else {
@@ -321,7 +321,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         ];
         foreach ($branches as $branch) {
             $this->githubClient->repo()->protection()
-                ->update(static::GITHUB_GROUP, $repositoryName, $branch, $protectionConfig);
+                ->update($this->githubGroup, $repositoryName, $branch, $protectionConfig);
         }
         $this->io->comment('Branches protection applied.');
     }
@@ -332,7 +332,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     private function dispatchFiles(Package $package)
     {
         $repositoryName = $this->getRepositoryName($package);
-        $projectConfig = $this->configs['projects'][str_replace(static::PACKAGIST_GROUP . '/', '', $package->getName())];
+        $projectConfig = $this->configs['projects'][str_replace($this->packagistGroup . '/', '', $package->getName())];
 
         // No branch to manage, continue to next project.
         if (0 === count($projectConfig['branches'])) {
@@ -349,10 +349,10 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $this->fileSystem->remove($clonePath);
         }
         $git = $this->gitWrapper->cloneRepository(
-            'https://' . static::GITHUB_USER . ':' . $this->githubAuthKey . '@github.com/' . static::GITHUB_GROUP . '/' . $repositoryName,
+            'https://' . $this->githubUser . ':' . $this->githubAuthKey . '@github.com/' . $this->githubGroup . '/' . $repositoryName,
             $clonePath
         );
-        $git->config('user.name', static::GITHUB_USER) ->config('user.email', static::GITHUB_EMAIL);
+        $git->config('user.name', $this->githubUser) ->config('user.email', $this->githubEmail);
         $branches = array_reverse($projectConfig['branches']);
 
         $previousBranch = null;
@@ -361,7 +361,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             // We have to fetch all branches on each step in case a PR is submitted.
             $remoteBranches = array_map(function ($branch) {
                 return $branch['name'];
-            }, $this->githubClient->repos()->branches(static::GITHUB_GROUP, $repositoryName));
+            }, $this->githubClient->repos()->branches($this->githubGroup, $repositoryName));
 
             $currentBranch = key($branches);
             $currentDevKit = $currentBranch . '-dev-kit';
@@ -373,7 +373,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             }
             // If the previous branch is not merged into the current one, do nothing.
             if ($previousBranch && $this->githubClient->repos()->commits()->compare(
-                static::GITHUB_GROUP,
+                $this->githubGroup,
                 $repositoryName,
                 $currentBranch,
                 $previousBranch
@@ -410,12 +410,12 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     $git->commit('DevKit updates')->push('-u', 'origin', $currentDevKit);
 
                     // If the Pull Request does not exists yet, create it.
-                    $pulls = $this->githubClient->pullRequests()->all(static::GITHUB_GROUP, $repositoryName, [
+                    $pulls = $this->githubClient->pullRequests()->all($this->githubGroup, $repositoryName, [
                         'state' => 'open',
                         'head' => $currentDevKit,
                     ]);
                     if (0 === count($pulls)) {
-                        $this->githubClient->pullRequests()->create(static::GITHUB_GROUP, $repositoryName, [
+                        $this->githubClient->pullRequests()->create($this->githubGroup, $repositoryName, [
                             'title' => 'DevKit updates for ' . $currentBranch . ' branch',
                             'head' => $currentDevKit,
                             'base' => $currentBranch,
@@ -534,7 +534,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $stableBranch,
                 $legacyBranch,
                 $branchConfig['docs_path'],
-                str_replace([static::PACKAGIST_GROUP . '/', '-bundle'], '', $package->getName()),
+                str_replace([$this->packagistGroup . '/', '-bundle'], '', $package->getName()),
             ], $localContent));
         }
         // Restore file permissions after content copy

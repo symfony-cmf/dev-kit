@@ -71,7 +71,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
             $projectConfig = $this->configs['projects'][$name];
 
             try {
-                $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
+                $package = $this->packagistClient->get($this->packagistGroup.'/'.$name);
                 $this->io->title($package->getName());
                 $this->mergeBranches($package, $projectConfig);
             } catch (ExceptionInterface $e) {
@@ -102,7 +102,7 @@ final class AutoMergeCommand extends AbstractNeedApplyCommand
                 // Merge message should be removed when following PR will be merged and tagged.
                 // https://github.com/KnpLabs/php-github-api/pull/379
                 $response = $this->githubClient->repo()->merge(
-                    static::GITHUB_GROUP,
+                    $this->githubGroup,
                     $repositoryName,
                     $base,
                     $head,
