@@ -37,12 +37,20 @@ matrix:
       env: DEPS=dev SYMFONY_VERSION={{ versions.symfony|last }}.*
     - php: {{ php|first }}
       env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION={{ versions.symfony|first }}.* SYMFONY_DEPRECATIONS_HELPER=weak
+{% if php|length < 3 %}
+{% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
+    - php: {{ php|last }}
+      env: SYMFONY={{ version }}.*
+{% endfor %}
+{% else %}
 {% for php_version in php if php_version != php|last and php_version != php|first %}
 {% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
     - php: {{ php_version }}
       env: SYMFONY={{ version }}.*
 {% endfor %}
 {% endfor %}
+{% endif %}
+
     - env: TEST_INSTALLATION=true
   fast_finish: true
 
