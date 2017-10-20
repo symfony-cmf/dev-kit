@@ -15,4 +15,6 @@ seo-bundle:
         functional_tests_orm: ~
         test_installation: ~
       versions:
-        symfony: ['2.8', '3.1', '3.2', '3.3', '3.4', '4.0']
+        symfony: ['2.8', '3.1', '3.2', '3.3']
+      failing_allowed_versions:
+        symfony: ['3.4']

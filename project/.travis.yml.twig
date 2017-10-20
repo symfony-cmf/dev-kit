@@ -16,7 +16,7 @@
 language: php
 
 php:
-  - 7.0
+  - 7.1
 
 sudo: false
 
@@ -26,13 +26,16 @@ cache:
     - $HOME/.composer/cache/files
 
 env:
-  matrix: SYMFONY_VERSION=3.2.*
+  matrix: SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
   global:
     - SYMFONY_DEPRECATIONS_HELPER=48
     - SYMFONY_PHPUNIT_DIR=.phpunit SYMFONY_PHPUNIT_REMOVE="symfony/yaml" SYMFONY_PHPUNIT_VERSION=5.7
+    - TEST_INSTALLATION=false
 
 matrix:
   include:
+    - php: {{ php|last }}
+      env: SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}.*
     - php: {{ php|last }}
       env: DEPS=dev SYMFONY_VERSION={{ versions.symfony|last }}.*
     - php: {{ php|first }}
@@ -40,22 +43,23 @@ matrix:
 {% if php|length < 3 %}
 {% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
     - php: {{ php|last }}
-      env: SYMFONY={{ version }}.*
+      env: SYMFONY_VERSION={{ version }}.*
 {% endfor %}
 {% else %}
 {% for php_version in php if php_version != php|last and php_version != php|first %}
 {% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
     - php: {{ php_version }}
-      env: SYMFONY={{ version }}.*
+      env: SYMFONY_VERSION={{ version }}.*
 {% endfor %}
 {% endfor %}
 {% endif %}
 
     - env: TEST_INSTALLATION=true
   fast_finish: true
-  allowed_failures:
+  allow_failures:
     - php: {{ php|last }}
-      env: DEPS=dev SYMFONY_VERSION={{ versions.symfony|last }}.*
+      env: SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}.*
+    - env: TEST_INSTALLATION=true
 
 
 before_install:

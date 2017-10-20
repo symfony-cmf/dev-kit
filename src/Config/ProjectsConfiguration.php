@@ -60,6 +60,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                                         ->arrayNode('services')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->scalarNode('target_php')->defaultNull()->end()
                                         ->append($this->addVersionsNode())
+                                        ->append($this->addFailingVersionsNode())
                                         ->scalarNode('docs_path')->defaultValue('Resources/doc')->end()
                                         ->arrayNode('make_tasks')
                                             ->prototype('scalar')
@@ -81,6 +82,22 @@ class ProjectsConfiguration implements ConfigurationInterface
     {
         $builder = new TreeBuilder();
         $node = $builder->root('versions');
+
+        $childrenNode = $node->children();
+
+        foreach ($this->devKitConfigs['packages'] as $key => $name) {
+            $childrenNode->arrayNode($key)->prototype('scalar')->defaultValue([])->end()->end();
+        }
+
+        $childrenNode->end();
+
+        return $node;
+    }
+
+    private function addFailingVersionsNode()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('failing_allowed_versions');
 
         $childrenNode = $node->children();
 
