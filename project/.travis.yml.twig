@@ -53,6 +53,10 @@ matrix:
 
     - env: TEST_INSTALLATION=true
   fast_finish: true
+  allowed_failures:
+    - php: {{ php|last }}
+      env: DEPS=dev SYMFONY_VERSION={{ versions.symfony|last }}.*
+
 
 before_install:
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi
