@@ -62,6 +62,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                                         ->append($this->addVersionsNode())
                                         ->append($this->addFailingVersionsNode())
                                         ->scalarNode('docs_path')->defaultValue('Resources/doc')->end()
+                                        ->scalarNode('docs_extra')->defaultValue('')->end()
                                         ->arrayNode('make_tasks')
                                             ->prototype('scalar')
                                             ->defaultValue([])

@@ -59,7 +59,9 @@ matrix:
   allow_failures:
     - php: {{ php|last }}
       env: SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}.*
-    - env: TEST_INSTALLATION=true
+{% if make_tasks.test_installation is defined %}
+- env: TEST_INSTALLATION=true
+{% endif %}
 
 
 before_install:
@@ -71,8 +73,6 @@ before_install:
   - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
 
 install: travis_wait composer update --prefer-dist $COMPOSER_FLAGS
-
-before_script: vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh
 
 script:
   - if [ "${TEST_INSTALLATION}" == true ]; then make test_installation; else make test; fi
