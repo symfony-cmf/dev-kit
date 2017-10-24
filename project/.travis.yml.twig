@@ -26,10 +26,16 @@ cache:
     - $HOME/.composer/cache/files
 
 env:
+{% if failing_allowed_versions.symfony|length > 0 %}
   matrix: SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
+{% elseif versions.symfony|length > 0 %}
+    matrix: SYMFONY_VERSION={{ versions.symfony|first }}
+{% endif %}
   global:
+{% if failing_allowed_versions.symfony|length > 0 or versions.symfony|length > 0 %}
     - SYMFONY_DEPRECATIONS_HELPER=48
     - SYMFONY_PHPUNIT_DIR=.phpunit SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
+{% endif %}
 {% if phpunit_version %}
     - SYMFONY_PHPUNIT_VERSION={{ phpunit_version }}
 {% endif %}

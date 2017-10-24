@@ -158,8 +158,25 @@ resource-bundle:
       php: ['7.0', '7.1']
       make_tasks:
         unit_tests: ~
+        functional_tests_phpcr: ~
         test_installation: ~
       versions:
         symfony: ['2.8', '3.1', '3.2', '3.3']
       failing_allowed_versions:
         symfony: ['3.4']
+resource:
+  excluded_files:
+      - .travis.yml.twig
+  description: |
+    The Resource component provides PHPCR/ODM integration with Puli.
+
+     > **CAUTION** As Puli is not yet stable, the complete component is marked
+     > internal. Backwards compatibility of upcoming 1.x versions is not
+     > guaranteed.
+
+  branches:
+    master:
+      docs_path: 'components/resource'
+      php: ['5.6', '7.0', '7.1']
+      make_tasks:
+        unit_tests: ~

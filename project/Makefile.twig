@@ -35,5 +35,6 @@ list:
 include ${TESTING_SCRIPTS_DIR}/make/{{ test }}.mk
 {% endfor %}
 
+.PHONY: test
 test:{% for test, value in make_tasks if test != 'test_installation' %} {{ test }}{% endfor %}
 
