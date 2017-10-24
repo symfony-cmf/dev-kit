@@ -29,7 +29,10 @@ env:
   matrix: SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
   global:
     - SYMFONY_DEPRECATIONS_HELPER=48
-    - SYMFONY_PHPUNIT_DIR=.phpunit SYMFONY_PHPUNIT_REMOVE="symfony/yaml" SYMFONY_PHPUNIT_VERSION=5.7
+    - SYMFONY_PHPUNIT_DIR=.phpunit SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
+{% if phpunit_version %}
+    - SYMFONY_PHPUNIT_VERSION={{ phpunit_version }}
+{% endif %}
     - TEST_INSTALLATION=false
 
 matrix:
@@ -53,14 +56,16 @@ matrix:
 {% endfor %}
 {% endfor %}
 {% endif %}
-
+{% if make_tasks.test_installation is defined %}
     - env: TEST_INSTALLATION=true
+{% endif %}
+
   fast_finish: true
   allow_failures:
     - php: {{ php|last }}
       env: SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}.*
 {% if make_tasks.test_installation is defined %}
-- env: TEST_INSTALLATION=true
+    - env: TEST_INSTALLATION=true
 {% endif %}
 
 

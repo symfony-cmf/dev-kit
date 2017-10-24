@@ -63,6 +63,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                                         ->append($this->addFailingVersionsNode())
                                         ->scalarNode('docs_path')->defaultValue('Resources/doc')->end()
                                         ->scalarNode('docs_extra')->defaultValue('')->end()
+                                        ->scalarNode('phpunit_version')->defaultValue('5.7')->end()
                                         ->arrayNode('make_tasks')
                                             ->prototype('scalar')
                                             ->defaultValue([])

@@ -90,6 +90,20 @@ routing:
         symfony: ['2.8', '3.1', '3.2', '3.3']
       failing_allowed_versions:
         symfony: ['3.4']
+routing-auto:
+  description: |
+      This component automatically creates and manages routes for configured persisted document classes.
+      This library contains all implementation agnostic code.
+  branches:
+    master:
+      docs_path: 'components/routing'
+      php: ['5.6', '7.0', '7.1']
+      make_tasks:
+        unit_tests: ~
+      versions:
+        symfony: ['2.8', '3.1', '3.2', '3.3']
+      failing_allowed_versions:
+        symfony: ['3.4']
 content-bundle:
   description: |
       The ContentBundle provides a document for static content and the controller to render it.
@@ -111,79 +125,36 @@ resource-rest-bundle:
   branches:
     master:
       docs_path: 'bundles/resource-rest'
-      docs_extra: |
-          ## Example
+      php: ['7.0', '7.1']
+      make_tasks:
+        unit_tests: ~
+        test_installation: ~
+      versions:
+        symfony: ['2.8', '3.1', '3.2', '3.3']
+      failing_allowed_versions:
+        symfony: ['3.4']
+resource-bundle:
+  description: |
+      This bundle provides *object* resource location services based on Puli.
 
-          ````bash
-          $ curl http://localhost:8000/api/phpcrodm_repo/foo | python -m json.tool
-          {
-              "_links": {
-                  "self": {
-                      "href": "/api/phpcrodm_repo/foo"
-                  }
-              },
-              "children": {
-                  "bar": {
-                      "_links": {
-                          "self": {
-                              "href": "/api/phpcrodm_repo/foo/bar"
-                          }
-                      },
-                      "children": [],
-                      "document": {
-                          "_links": {
-                              "self": {
-                                  "href": "/path/to/this"
-                              }
-                          },
-                          "body": "This is my second article",
-                          "id": "/tests/cmf/articles/foo/bar",
-                          "title": "Article 2"
-                      },
-                      "path": "/foo/bar",
-                      "repo_path": "/foo/bar"
-                  },
-                  "boo": {
-                      "_links": {
-                          "self": {
-                              "href": "/api/phpcrodm_repo/foo/boo"
-                          }
-                      },
-                      "children": [],
-                      "document": {
-                          "_links": {
-                              "self": {
-                                  "href": "/path/to/this"
-                              }
-                          },
-                          "body": "This is my third article",
-                          "id": "/tests/cmf/articles/foo/boo",
-                          "title": "Article 2"
-                      },
-                      "path": "/foo/boo",
-                      "repo_path": "/foo/boo"
-                  }
-              },
-              "document": {
-                  "_links": {
-                      "self": {
-                          "href": "/path/to/this"
-                      }
-                  },
-                  "body": "This is my article",
-                  "id": "/tests/cmf/articles/foo",
-                  "title": "Article 1"
-              },
-              "path": "/foo",
-              "repo_path": "/foo"
-          }
-          ````
-          ## Running the tests
+      Examples:
 
-          ### Behat
-          - Setup database: `./vendor/symfony-cmf/testing/bin/travis/phpcr_odm_doctrine_dbal.sh`
-          - Run server: `./vendor/symfony-cmf/testing/bin/server`
-          - Run tests: `./vendor/bin/behat`
+      - **Static document path mapping**: Map the path `/routes` to `/cms/routes`
+      - **Dynamic document resolution**: Map the path `/routes` to `/cms/<current site>/routes`.
+      - **Access documents at a static location**: Map `/role/menu/main` to `/cms/menus/main-menu`.
+
+      The first example could use the existing CMF base route configuration to
+      resolve paths.
+
+      The benefit of the above two examples would be most strongly felt in
+      association with another component which would provide a context for the
+      document resource resolution.
+
+      For example, a `Site` which is matched against the incoming hostname would
+      provide the context with which to resolve the documents.
+  branches:
+    master:
+      docs_path: 'bundles/resource-rest'
       php: ['7.0', '7.1']
       make_tasks:
         unit_tests: ~
