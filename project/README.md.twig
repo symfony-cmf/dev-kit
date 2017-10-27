@@ -27,7 +27,7 @@ under the [MIT License](LICENSE).
 
 * PHP {% for version in php %}{{ version }}{% if version != php|last %} / {% endif %}{% endfor %}
 
-* Symfony {% for version in versions.symfony %}{{ version }}{% if version != versions.symfony|last %} / {% endif %}{% endfor %}
+* Symfony {% for version in versions.symfony %}{{ version|replace({'.*': ''}) }}{% if version != versions.symfony|last %} / {% endif %}{% endfor %}
 
 * See also the `require` section of [composer.json](composer.json)
 

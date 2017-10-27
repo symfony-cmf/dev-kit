@@ -33,7 +33,7 @@ env:
 {% endif %}
   global:
 {% if failing_allowed_versions.symfony|length > 0 or versions.symfony|length > 0 %}
-    - SYMFONY_DEPRECATIONS_HELPER=48
+    - SYMFONY_DEPRECATIONS_HELPER=24
     - SYMFONY_PHPUNIT_DIR=.phpunit SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
 {% endif %}
 {% if phpunit_version %}
@@ -44,21 +44,21 @@ env:
 matrix:
   include:
     - php: {{ php|last }}
-      env: SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}.*
+      env: DEPS=dev SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
     - php: {{ php|last }}
-      env: DEPS=dev SYMFONY_VERSION={{ versions.symfony|last }}.*
+      env: DEPS=dev SYMFONY_VERSION={{ versions.symfony|last }}
     - php: {{ php|first }}
-      env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION={{ versions.symfony|first }}.* SYMFONY_DEPRECATIONS_HELPER=weak
+      env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION={{ versions.symfony|first }} SYMFONY_DEPRECATIONS_HELPER=weak
 {% if php|length < 3 %}
 {% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
     - php: {{ php|last }}
-      env: SYMFONY_VERSION={{ version }}.*
+      env: SYMFONY_VERSION={{ version }}
 {% endfor %}
 {% else %}
 {% for php_version in php if php_version != php|last and php_version != php|first %}
 {% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
     - php: {{ php_version }}
-      env: SYMFONY_VERSION={{ version }}.*
+      env: SYMFONY_VERSION={{ version }}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -69,7 +69,7 @@ matrix:
   fast_finish: true
   allow_failures:
     - php: {{ php|last }}
-      env: SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}.*
+      env: DEPS=dev SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
 {% if make_tasks.test_installation is defined %}
     - env: TEST_INSTALLATION=true
 {% endif %}
