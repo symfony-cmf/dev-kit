@@ -164,6 +164,20 @@ resource-bundle:
         symfony: ['2.8', '3.1', '3.2', '3.3']
       failing_allowed_versions:
         symfony: ['3.4']
+sonata-phpcr-admin-integration-bundle:
+  description: ""
+  branches:
+    master:
+      docs_path: 'bundles/sonata-phpcr-admin-integration-bundle'
+      php: ['7.0', '7.1']
+      make_tasks:
+        unit_tests: ~
+        functional_tests_phpcr: ~
+        test_installation: ~
+      versions:
+        symfony: ['2.8', '3.1', '3.2', '3.3']
+      failing_allowed_versions:
+        symfony: ['3.4']
 resource:
   excluded_files:
       - .travis.yml.twig
