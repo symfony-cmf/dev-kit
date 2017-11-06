@@ -61,6 +61,8 @@ class ProjectsConfiguration implements ConfigurationInterface
                                         ->scalarNode('target_php')->defaultNull()->end()
                                         ->append($this->addVersionsNode())
                                         ->append($this->addFailingVersionsNode())
+                                        ->scalarNode('test_kernel')->defaultNull()->end()
+                                        ->scalarNode('deprecation_warnings')->defaultValue(24)->end()
                                         ->scalarNode('docs_path')->defaultValue('Resources/doc')->end()
                                         ->scalarNode('docs_extra')->defaultValue('')->end()
                                         ->scalarNode('phpunit_version')->defaultValue('5.7')->end()

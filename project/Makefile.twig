@@ -13,18 +13,20 @@
 # file that was distributed with this source code.                         #
 ############################################################################
 
-ifeq ("{{ packagist_name }}", "symfony-cmf/testing")
+{% if packagist_name == "symfony-cmf/testing" %}
 TESTING_SCRIPTS_DIR=bin
-else
+{% else %}
 TESTING_SCRIPTS_DIR=vendor/symfony-cmf/testing/bin
-endif
+{% endif %}
 CONSOLE=${TESTING_SCRIPTS_DIR}/console
 VERSION=dev-master
 ifdef BRANCH
 	VERSION=dev-${BRANCH}
 endif
 PACKAGE={{ packagist_name }}
-
+{% if test_kernel %}
+export KERNEL_CLASS={{ test_kernel }}
+{% endif %}
 list:
 	@echo 'test:                    will run all tests'
 {% if make_tasks.unit_tests is defined %}	@echo 'unit_tests:               will run unit tests only'{% endif %}
