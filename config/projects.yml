@@ -36,6 +36,27 @@ core-bundle:
         symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
         symfony: ['^4@dev']
+block-bundle:
+  description: |
+      The BlockBundle provides integration with
+      [SonataBlockBundle](https://github.com/sonata-project/SonataBlockBundle).
+      It is used to manage fragments of content, so-called blocks, that are persisted
+      in a database and can be incorporated into any page layout. The BlockBundle also
+      provides a few commonly used standard blocks, including the ability to edit them.
+  branches:
+    master:
+      docs_path: 'bundles/block'
+      test_kernel: Symfony\Cmf\Bundle\BlockBundle\Tests\Fixtures\App\Kernel
+      deprecation_warnings: 0
+      php: ['7.1']
+      make_tasks:
+        unit_tests: ~
+        functional_tests_phpcr: ~
+        test_installation: ~
+      versions:
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
+      failing_allowed_versions:
+        symfony: ['^4.0@dev']
 menu-bundle:
   description: |
       The MenuBundle provides menus from a doctrine object manager with the help of KnpMenuBundle.
@@ -52,7 +73,7 @@ menu-bundle:
       versions:
         symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
-        symfony: ['^4@dev']
+        symfony: ['^4.0@dev']
 routing-bundle:
   description: |
       The RoutingBundle enables the
@@ -73,7 +94,7 @@ routing-bundle:
       versions:
         symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
-        symfony: ['^4@dev']
+        symfony: ['^4.0@dev']
 routing:
   description: |
       The Symfony CMF Routing component extends the Symfony routing component with additional features:
@@ -92,13 +113,13 @@ routing:
     master:
       docs_path: 'components/routing'
       deprecation_warnings: 0
-      php: ['5.6', '7.0', '7.1']
+      php: ['7.1']
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.1.*', '3.2.*', '3.3.*', '^3.4@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
-        symfony: ['^4@dev']
+        symfony: ['^4.0@dev']
 routing-auto:
   description: |
       This component automatically creates and manages routes for configured persisted document classes.
@@ -107,13 +128,13 @@ routing-auto:
     master:
       docs_path: 'components/routing'
       deprecation_warnings: 0
-      php: ['5.6', '7.0', '7.1']
+      php: ['7.1']
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.1.*', '3.2.*', '3.3.*', '^3.4@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
-        symfony: ['^4@dev']
+        symfony: ['^4.0@dev']
 content-bundle:
   description: |
       The ContentBundle provides a document for static content and the controller to render it.
@@ -130,7 +151,7 @@ content-bundle:
       versions:
         symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
-        symfony: ['^4@dev']
+        symfony: ['^4.0@dev']
 routing-auto-bundle:
   description: |
       This bundle automatically creates and manages routes for configured persisted document classes.
@@ -147,22 +168,35 @@ routing-auto-bundle:
       versions:
         symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
-        symfony: ['^4@dev']
+        symfony: ['^4.0@dev']
 resource-rest-bundle:
   description: |
       This Bundle provides a REST API to Puli resources as provided by the CmfResource component.
+
+      #### Running Behat
+
+      1. Run web server:
+      ```
+      KERNEL_CLASS="Symfony\Cmf\Bundle\ResourceRestBundle\Tests\Fixtures\App\Kernel" ./vendor/symfony-cmf/testing/bin/console server:run -d vendor/symfony-cmf/testing/resources/web/ 8000
+      ```
+      2. Run the behat tests:
+      ```
+      KERNEL_CLASS="Symfony\Cmf\Bundle\ResourceRestBundle\Tests\Fixtures\App\Kernel" ./vendor/bin/behat
+      ```
+
   branches:
     master:
       docs_path: 'bundles/resource-rest'
       deprecation_warnings: 0
-      php: ['7.0', '7.1']
+      test_kernel: Symfony\Cmf\Bundle\ResourceRestBundle\Tests\Fixtures\App\Kernel
+      php: ['7.1']
       make_tasks:
         unit_tests: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.1.*', '3.2.*', '3.3.*', '^3.4@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
-        symfony: ['^4@dev']
+        symfony: ['^4.0@dev']
 resource-bundle:
   description: |
       This bundle provides *object* resource location services based on Puli.
@@ -182,6 +216,7 @@ resource-bundle:
 
       For example, a `Site` which is matched against the incoming hostname would
       provide the context with which to resolve the documents.
+
   branches:
     master:
       docs_path: 'bundles/resource-rest'
@@ -195,22 +230,23 @@ resource-bundle:
       versions:
         symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
-        symfony: ['^4@dev']
+        symfony: ['^4.0@dev']
 sonata-phpcr-admin-integration-bundle:
   description: ""
   branches:
     master:
       docs_path: 'bundles/sonata-phpcr-admin-integration-bundle'
+      test_kernel: Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: 0
-      php: ['7.0', '7.1']
+      php: ['7.1']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.1.*', '3.2.*', '3.3.*', '^3.4@dev']
+        symfony: ['2.8.*','3.3.*', '^3.4@dev']
       failing_allowed_versions:
-        symfony: ['^4@dev']
+        symfony: ['^4.0@dev']
 resource:
   excluded_files:
       - .travis.yml.twig
@@ -225,7 +261,7 @@ resource:
     master:
       docs_path: 'components/resource'
       deprecation_warnings: 0
-      php: ['5.6', '7.0', '7.1']
+      php: ['7.1']
       make_tasks:
         unit_tests: ~
 testing:
@@ -252,10 +288,10 @@ tree-browser-bundle:
     master:
       docs_path: 'bundle/tree-browser-bundle'
       deprecation_warnings: 0
-      php: ['5.6', '7.0', '7.1']
+      php: ['7.1']
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.1.*', '3.2.*', '3.3.*', '^3.4@dev']
+        symfony: ['2.8.*', '^3.4@dev']
       failing_allowed_versions:
-        symfony: ['^4@dev']
+        symfony: ['^4.0@dev']
