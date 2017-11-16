@@ -5,7 +5,7 @@ seo-bundle:
   branches:
     master:
       docs_path: 'bundles/seo'
-      test_kernel: 'Symfony\Cmf\Bundle\SeoBundle\Tests\App\Kernel'
+      test_kernel: 'Symfony\Cmf\Bundle\SeoBundle\Tests\Fixtures\App\Kernel'
       deprecation_warnings: 0
       php: ['7.1']
       make_tasks:
@@ -14,7 +14,7 @@ seo-bundle:
         functional_tests_orm: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.1.*', '3.2.*', '3.3.*', '^3.4']
+        symfony: ['2.8.*',  '3.3.*', '^3.4@dev']
       failing_allowed_versions:
         symfony: ['^4.0@dev']
 core-bundle:
@@ -25,16 +25,15 @@ core-bundle:
   branches:
     master:
       docs_path: 'bundles/core'
-      test_kernel: Symfony\Cmf\Bundle\CoreBundle\Tests\App\AppKernel
-      test_kernel: Symfony\Cmf\Bundle\CoreBundle\Tests\App\AppKernel
+      test_kernel: Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: 0
-      php: ['5.6', '7.0', '7.1']
+      php: ['7.1']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.1.*', '3.2.*', '3.3.*', '^3.4@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
         symfony: ['^4@dev']
 menu-bundle:
@@ -44,14 +43,14 @@ menu-bundle:
     master:
       docs_path: 'bundles/menu'
       deprecation_warnings: 0
-      test_kernel: Symfony\Cmf\Bundle\MenuBundle\Tests\App\AppKernel
-      php: ['5.6', '7.0', '7.1']
+      test_kernel: Symfony\Cmf\Bundle\MenuBundle\Tests\Fixtures\App\Kernel
+      php: ['7.1']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.1.*', '3.2.*', '3.3.*', '^3.4@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
         symfony: ['^4@dev']
 routing-bundle:
@@ -64,15 +63,15 @@ routing-bundle:
     master:
       docs_path: 'bundles/routing'
       deprecation_warnings: 0
-      test_kernel: Symfony\Cmf\Bundle\RoutingBundle\Tests\App\AppKernel
-      php: ['5.6', '7.0', '7.1']
+      test_kernel: Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Kernel
+      php: ['7.1']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
         functional_tests_orm: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.1.*', '3.2.*', '3.3.*', '^3.4@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
         symfony: ['^4@dev']
 routing:
@@ -123,13 +122,13 @@ content-bundle:
       docs_path: 'bundles/routing'
       deprecation_warnings: 0
       test_kernel: Symfony\Cmf\Bundle\ContentBundle\Tests\Fixtures\App\Kernel
-      php: ['5.6', '7.0', '7.1']
+      php: ['7.1']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.1.*', '3.2.*', '3.3.*', '^3.4@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
         symfony: ['^4@dev']
 routing-auto-bundle:
@@ -138,14 +137,15 @@ routing-auto-bundle:
   branches:
     master:
       docs_path: 'bundles/routing-auto-bundle'
+      test_kernel: Symfony\Cmf\Bundle\RoutingAutoBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: 0
-      php: ['5.6', '7.0', '7.1']
+      php: ['7.1']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.1.*', '3.2.*', '3.3.*', '^3.4@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
         symfony: ['^4@dev']
 resource-rest-bundle:
@@ -186,14 +186,14 @@ resource-bundle:
     master:
       docs_path: 'bundles/resource-rest'
       deprecation_warnings: 0
-      test_kernel: Symfony\Cmf\Bundle\ResourceBundle\Tests\App\AppKernel
-      php: ['7.0', '7.1']
+      test_kernel: Symfony\Cmf\Bundle\ResourceBundle\Tests\Fixtures\App\Kernel
+      php: ['7.1']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.1.*', '3.2.*', '3.3.*', '^3.4@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
         symfony: ['^4@dev']
 sonata-phpcr-admin-integration-bundle:
@@ -237,13 +237,11 @@ testing:
     master:
       docs_path: 'components/testing'
       deprecation_warnings: 0
-      php: ['5.6', '7.0', '7.1']
+      php: ['7.1']
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.1.*', '3.2.*', '3.3.*', '^3.4@dev']
-      failing_allowed_versions:
-        symfony: ['^4@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4@dev']
 tree-browser-bundle:
   excluded_files:
       - .travis.yml.twig
