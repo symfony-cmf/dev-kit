@@ -273,4 +273,4 @@ tree-browser-bundle:
         unit_tests: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '^3.4@dev', '^4.0@dev']
+        symfony: ['2.8.*', '3.3', '^3.4@dev', '^4.0@dev']

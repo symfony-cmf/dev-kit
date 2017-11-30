@@ -563,14 +563,16 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $branchConfig = $projectConfig['branches'][$currentBranch];
         $composerAsJson['require']['php'] = $this->evaluateVersionString($branchConfig['php']);
-        foreach ($composerAsJson['require'] as $package => $version) {
-            if (preg_match('/symfony\//', $package)) {
-                $composerAsJson['require'][$package] = $this->evaluateVersionString($branchConfig['versions']['symfony']);
+        if (isset($branchConfig['versions']['symfony'])) {
+            foreach ($composerAsJson['require'] as $package => $version) {
+                if (preg_match('/symfony\//', $package)) {
+                    $composerAsJson['require'][$package] = $this->evaluateVersionString($branchConfig['versions']['symfony']);
+                }
             }
-        }
-        foreach ($composerAsJson['require-dev'] as $package => $version) {
-            if (preg_match('/symfony\//', $package)) {
-                $composerAsJson['require-dev'][$package] = $this->evaluateVersionString($branchConfig['versions']['symfony']);
+            foreach ($composerAsJson['require-dev'] as $package => $version) {
+                if (preg_match('/symfony\//', $package)) {
+                    $composerAsJson['require-dev'][$package] = $this->evaluateVersionString($branchConfig['versions']['symfony']);
+                }
             }
         }
         $composerAsString = json_encode($composerAsJson, JSON_PRETTY_PRINT);
