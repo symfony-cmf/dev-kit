@@ -14,9 +14,7 @@ seo-bundle:
         functional_tests_orm: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*',  '3.3.*', '^3.4@dev']
-      failing_allowed_versions:
-        symfony: ['^4.0@dev']
+        symfony: ['2.8.*',  '3.3.*', '^3.4@dev', '^4.0@dev']
 core-bundle:
   description: |
       The CoreBundle for the Symfony content management framework provides common functionality,
@@ -35,7 +33,7 @@ core-bundle:
       versions:
         symfony: ['2.8.*', '3.3.*', '^3.4@dev']
       failing_allowed_versions:
-        symfony: ['^4@dev']
+        symfony: ['^4.0@dev']
 block-bundle:
   description: |
       The BlockBundle provides integration with
@@ -54,9 +52,7 @@ block-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
-      failing_allowed_versions:
-        symfony: ['^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
 menu-bundle:
   description: |
       The MenuBundle provides menus from a doctrine object manager with the help of KnpMenuBundle.
@@ -71,9 +67,7 @@ menu-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
-      failing_allowed_versions:
-        symfony: ['^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
 routing-bundle:
   description: |
       The RoutingBundle enables the
@@ -92,9 +86,7 @@ routing-bundle:
         functional_tests_orm: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
-      failing_allowed_versions:
-        symfony: ['^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev', '^4.0@dev']
 routing:
   description: |
       The Symfony CMF Routing component extends the Symfony routing component with additional features:
@@ -117,9 +109,7 @@ routing:
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
-      failing_allowed_versions:
-        symfony: ['^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev',]
 routing-auto:
   description: |
       This component automatically creates and manages routes for configured persisted document classes.
@@ -132,9 +122,7 @@ routing-auto:
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
-      failing_allowed_versions:
-        symfony: ['^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
 content-bundle:
   description: |
       The ContentBundle provides a document for static content and the controller to render it.
@@ -149,9 +137,7 @@ content-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
-      failing_allowed_versions:
-        symfony: ['^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
 routing-auto-bundle:
   description: |
       This bundle automatically creates and manages routes for configured persisted document classes.
@@ -166,9 +152,7 @@ routing-auto-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
-      failing_allowed_versions:
-        symfony: ['^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
 resource-rest-bundle:
   description: |
       This Bundle provides a REST API to Puli resources as provided by the CmfResource component.
@@ -194,9 +178,7 @@ resource-rest-bundle:
         unit_tests: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
-      failing_allowed_versions:
-        symfony: ['^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
 resource-bundle:
   description: |
       This bundle provides *object* resource location services based on Puli.
@@ -228,9 +210,7 @@ resource-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
-      failing_allowed_versions:
-        symfony: ['^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
 sonata-phpcr-admin-integration-bundle:
   description: ""
   branches:
@@ -244,7 +224,7 @@ sonata-phpcr-admin-integration-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*','3.3.*', '^3.4@dev']
+        symfony: ['2.8.*','3.3.*', '^3.4@dev', '^4.0@dev']
       failing_allowed_versions:
         symfony: ['^4.0@dev']
 resource:
@@ -277,7 +257,7 @@ testing:
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4@dev']
+        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
 tree-browser-bundle:
   excluded_files:
       - .travis.yml.twig
@@ -291,7 +271,6 @@ tree-browser-bundle:
       php: ['7.1']
       make_tasks:
         unit_tests: ~
+        test_installation: ~
       versions:
-        symfony: ['2.8.*', '^3.4@dev']
-      failing_allowed_versions:
-        symfony: ['^4.0@dev']
+        symfony: ['2.8.*', '^3.4@dev', '^4.0@dev']

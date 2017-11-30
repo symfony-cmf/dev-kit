@@ -44,8 +44,10 @@ env:
 
 matrix:
   include:
+{% if failing_allowed_versions.symfony is defined %}
     - php: {{ php|last }}
       env: DEPS=dev SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
+{% endif %}
     - php: {{ php|last }}
       env: DEPS=dev SYMFONY_VERSION={{ versions.symfony|last }}
     - php: {{ php|first }}
@@ -69,8 +71,10 @@ matrix:
 
   fast_finish: true
   allow_failures:
+{% if failing_allowed_versions.symfony is defined %}
     - php: {{ php|last }}
       env: DEPS=dev SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
+{% endif %}
 {% if make_tasks.test_installation is defined %}
     - env: TEST_INSTALLATION=true
 {% endif %}

@@ -401,6 +401,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
             $this->renderFile($package, $repositoryName, 'project', $clonePath, $projectConfig, $currentBranch);
 
+            $this->setVersionConstraintsInComposer($clonePath, $projectConfig, $currentBranch);
+
             $git->add('.', ['all' => true])->getOutput();
             $diff = $git->diff('--color', '--cached')->getOutput();
 
@@ -539,5 +541,67 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
         // Restore file permissions after content copy
         $this->fileSystem->chmod($distPath, fileperms($localPath));
+    }
+
+    /**
+     * @param string $path
+     * @param array $projectConfig
+     *
+     * @throws \Exception
+     */
+    private function setVersionConstraintsInComposer($path, array $projectConfig, $currentBranch)
+    {
+        $filePath = $path.'/composer.json';
+        if (!$this->fileSystem->exists($filePath)) {
+            throw new \Exception('No composer.json found at: '.$filePath);
+        }
+        $composerAsString = file_get_contents($filePath);
+        $composerAsJson = json_decode($composerAsString, true);
+        if (!isset($composerAsJson['require'])) {
+            throw new \Exception('no require path found in composer.json at: '.$filePath);
+        }
+
+        $branchConfig = $projectConfig['branches'][$currentBranch];
+        $composerAsJson['require']['php'] = $this->evaluateVersionString($branchConfig['php']);
+        foreach ($composerAsJson['require'] as $package => $version) {
+            if (preg_match('/symfony\//', $package)) {
+                $composerAsJson['require'][$package] = $this->evaluateVersionString($branchConfig['versions']['symfony']);
+            }
+        }
+        foreach ($composerAsJson['require-dev'] as $package => $version) {
+            if (preg_match('/symfony\//', $package)) {
+                $composerAsJson['require-dev'][$package] = $this->evaluateVersionString($branchConfig['versions']['symfony']);
+            }
+        }
+        $composerAsString = json_encode($composerAsJson, JSON_PRETTY_PRINT);
+        $composerAsString = str_replace('\/', '/', $composerAsString);
+        $composerAsString .= PHP_EOL;
+        file_put_contents($filePath, $composerAsString);
+    }
+
+    /**
+     * Creates a string for version constraint with different major versions allowed.
+     *
+     * @param array $versions
+     *
+     * @return string
+     */
+    private function evaluateVersionString(array $versions)
+    {
+        $sortedVersions = [];
+        foreach ($versions as $version) {
+            $version = trim($version, '@dev^');
+            list($major, $minor) = explode('.', $version);
+            $sortedVersions[$major][] = $minor;
+        }
+
+        $versionConstraintString = '';
+        foreach ($sortedVersions as $major => $minorVersions) {
+            sort($minorVersions);
+            $firstMinorVersion = array_shift($minorVersions);
+            $versionConstraintString .= ' || ^' . $major . '.' . $firstMinorVersion;
+        }
+
+        return trim($versionConstraintString, ' || ');
     }
 }
