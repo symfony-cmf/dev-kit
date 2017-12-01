@@ -49,26 +49,25 @@ matrix:
       env: DEPS=dev SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
 {% endif %}
     - php: {{ php|last }}
-      env: DEPS=dev SYMFONY_VERSION={{ versions.symfony|last }}
+      env: {{ if dependency_mode != 'prod' }}DEPS=dev{{ endif }} SYMFONY_VERSION={{ versions.symfony|last }}
     - php: {{ php|first }}
       env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION={{ versions.symfony|first }} SYMFONY_DEPRECATIONS_HELPER=weak
 {% if php|length < 3 %}
 {% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
     - php: {{ php|last }}
-      env: SYMFONY_VERSION={{ version }}
+      env: {{ if dependency_mode != 'prod' }}DEPS=dev{{ endif }} SYMFONY_VERSION={{ version }}
 {% endfor %}
 {% else %}
 {% for php_version in php if php_version != php|last and php_version != php|first %}
 {% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
     - php: {{ php_version }}
-      env: SYMFONY_VERSION={{ version }}
+      env: {{ if dependency_mode != 'prod' }}DEPS=dev{{ endif }} SYMFONY_VERSION={{ version }}
 {% endfor %}
 {% endfor %}
 {% endif %}
 {% if make_tasks.test_installation is defined %}
     - env: TEST_INSTALLATION=true
 {% endif %}
-
   fast_finish: true
   allow_failures:
 {% if failing_allowed_versions.symfony is defined %}
@@ -78,7 +77,6 @@ matrix:
 {% if make_tasks.test_installation is defined %}
     - env: TEST_INSTALLATION=true
 {% endif %}
-
 
 before_install:
   - if [[ "$TRAVIS_PHP_VERSION" != "hhvm" ]]; then echo "memory_limit = -1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini; fi

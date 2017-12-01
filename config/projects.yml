@@ -4,6 +4,7 @@ seo-bundle:
       aware for Search Engine Optimisation (SEO).
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'bundles/seo'
       test_kernel: 'Symfony\Cmf\Bundle\SeoBundle\Tests\Fixtures\App\Kernel'
       deprecation_warnings: 0
@@ -14,7 +15,7 @@ seo-bundle:
         functional_tests_orm: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*',  '3.3.*', '^3.4@dev', '^4.0@dev']
+        symfony: ['2.8.*',  '3.3.*', '3.4.*', '4.0.*']
 core-bundle:
   description: |
       The CoreBundle for the Symfony content management framework provides common functionality,
@@ -22,6 +23,7 @@ core-bundle:
       a twig extension and php templating helper to walk PHPCR-ODM trees and support for optional translated content.
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'bundles/core'
       test_kernel: Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: 0
@@ -31,9 +33,9 @@ core-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev']
+        symfony: ['2.8.*', '3.3.*', '3.4.*']
       failing_allowed_versions:
-        symfony: ['^4.0@dev']
+        symfony: ['4.0.*']
 block-bundle:
   description: |
       The BlockBundle provides integration with
@@ -43,6 +45,7 @@ block-bundle:
       provides a few commonly used standard blocks, including the ability to edit them.
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'bundles/block'
       test_kernel: Symfony\Cmf\Bundle\BlockBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: 0
@@ -52,12 +55,13 @@ block-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 menu-bundle:
   description: |
       The MenuBundle provides menus from a doctrine object manager with the help of KnpMenuBundle.
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'bundles/menu'
       deprecation_warnings: 0
       test_kernel: Symfony\Cmf\Bundle\MenuBundle\Tests\Fixtures\App\Kernel
@@ -67,7 +71,7 @@ menu-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 routing-bundle:
   description: |
       The RoutingBundle enables the
@@ -76,6 +80,7 @@ routing-bundle:
       controller for redirection routes.
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'bundles/routing'
       deprecation_warnings: 0
       test_kernel: Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Kernel
@@ -86,7 +91,7 @@ routing-bundle:
         functional_tests_orm: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev', '^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*', '4.0.*']
 routing:
   description: |
       The Symfony CMF Routing component extends the Symfony routing component with additional features:
@@ -103,31 +108,34 @@ routing:
       when building Symfony full stack applications.
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'components/routing'
       deprecation_warnings: 0
       php: ['7.1']
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev',]
+        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*',]
 routing-auto:
   description: |
       This component automatically creates and manages routes for configured persisted document classes.
       This library contains all implementation agnostic code.
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'components/routing'
       deprecation_warnings: 0
       php: ['7.1']
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 content-bundle:
   description: |
       The ContentBundle provides a document for static content and the controller to render it.
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'bundles/routing'
       deprecation_warnings: 0
       test_kernel: Symfony\Cmf\Bundle\ContentBundle\Tests\Fixtures\App\Kernel
@@ -137,12 +145,13 @@ content-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 routing-auto-bundle:
   description: |
       This bundle automatically creates and manages routes for configured persisted document classes.
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'bundles/routing-auto-bundle'
       test_kernel: Symfony\Cmf\Bundle\RoutingAutoBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: 0
@@ -152,7 +161,7 @@ routing-auto-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 resource-rest-bundle:
   description: |
       This Bundle provides a REST API to Puli resources as provided by the CmfResource component.
@@ -170,6 +179,7 @@ resource-rest-bundle:
 
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'bundles/resource-rest'
       deprecation_warnings: 0
       test_kernel: Symfony\Cmf\Bundle\ResourceRestBundle\Tests\Fixtures\App\Kernel
@@ -178,7 +188,7 @@ resource-rest-bundle:
         unit_tests: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 resource-bundle:
   description: |
       This bundle provides *object* resource location services based on Puli.
@@ -201,6 +211,7 @@ resource-bundle:
 
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'bundles/resource-rest'
       deprecation_warnings: 0
       test_kernel: Symfony\Cmf\Bundle\ResourceBundle\Tests\Fixtures\App\Kernel
@@ -210,11 +221,12 @@ resource-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 sonata-phpcr-admin-integration-bundle:
   description: ""
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'bundles/sonata-phpcr-admin-integration-bundle'
       test_kernel: Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: 0
@@ -224,9 +236,9 @@ sonata-phpcr-admin-integration-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*','3.3.*', '^3.4@dev', '^4.0@dev']
+        symfony: ['2.8.*','3.3.*', '3.4.*', '4.0.*']
       failing_allowed_versions:
-        symfony: ['^4.0@dev']
+        symfony: ['4.0.*']
 resource:
   excluded_files:
       - .travis.yml.twig
@@ -239,6 +251,7 @@ resource:
 
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'components/resource'
       deprecation_warnings: 0
       php: ['7.1']
@@ -251,13 +264,14 @@ testing:
 
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'components/testing'
       deprecation_warnings: 0
       php: ['7.1']
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '^3.4@dev', '^4.0@dev']
+        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 tree-browser-bundle:
   excluded_files:
       - .travis.yml.twig
@@ -266,6 +280,7 @@ tree-browser-bundle:
 
   branches:
     master:
+      dependency_mode: dev
       docs_path: 'bundle/tree-browser-bundle'
       deprecation_warnings: 0
       php: ['7.1']
@@ -273,4 +288,4 @@ tree-browser-bundle:
         unit_tests: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3', '^3.4@dev', '^4.0@dev']
+        symfony: ['2.8.*', '3.3', '3.4.*', '4.0.*']

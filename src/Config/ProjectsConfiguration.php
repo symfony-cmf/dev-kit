@@ -56,6 +56,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                                 ->defaultValue([])
                                 ->prototype('array')
                                     ->children()
+                                        ->scalarNode('dependency_mode')->defaultValue('prod')->end()
                                         ->arrayNode('php')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->arrayNode('services')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->scalarNode('target_php')->defaultNull()->end()

@@ -563,6 +563,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
         $branchConfig = $projectConfig['branches'][$currentBranch];
         $composerAsJson['require']['php'] = $this->evaluateVersionString($branchConfig['php']);
+
+        // set version constraints for symfony dependencies
         if (isset($branchConfig['versions']['symfony'])) {
             foreach ($composerAsJson['require'] as $package => $version) {
                 if (preg_match('/symfony\//', $package)) {
@@ -575,6 +577,15 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 }
             }
         }
+
+        // remove minimum stability as we should set it via travis for specific builds or require @dev
+        if (isset($composerAsJson['minimum-stability'])) {
+            unset($composerAsJson['minimum-stability']);
+        }
+        if (isset($composerAsJson['prefer-stable'])) {
+            unset($composerAsJson['prefer-stable']);
+        }
+
         $composerAsString = json_encode($composerAsJson, JSON_PRETTY_PRINT);
         $composerAsString = str_replace('\/', '/', $composerAsString);
         $composerAsString .= PHP_EOL;
