@@ -567,13 +567,26 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         // set version constraints for symfony dependencies
         if (isset($branchConfig['versions']['symfony'])) {
             foreach ($composerAsJson['require'] as $package => $version) {
-                if (preg_match('/symfony\//', $package)) {
+                if ('symfony/monolog-bundle' === $package) {
+                    $composerAsJson['require'][$package] = '~3.1';
+                } elseif ('symfony/phpunit-bridge' === $package) {
+                    $composerAsJson['require'][$package] = trim(
+                        $this->evaluateVersionString($branchConfig['versions']['symfony']),
+                        '^2.8 | '
+                    );
+                }  elseif (preg_match('/symfony\//', $package)) {
                     $composerAsJson['require'][$package] = $this->evaluateVersionString($branchConfig['versions']['symfony']);
                 }
             }
-            foreach ($composerAsJson['require-dev'] as $package => $version) {
-                if (preg_match('/symfony\//', $package)) {
-                    $composerAsJson['require-dev'][$package] = $this->evaluateVersionString($branchConfig['versions']['symfony']);
+            if (isset($composerAsJson['require-dev'])) {
+                foreach ($composerAsJson['require-dev'] as $package => $version) {
+                    if ('symfony/monolog-bundle' === $package) {
+                        $composerAsJson['require-dev'][$package] = '~3.1';
+                    } elseif ('symfony/phpunit-bridge' === $package) {
+                        $composerAsJson['require-dev'][$package] = $this->evaluateVersionString($branchConfig['versions']['symfony'], '3.2');
+                    } elseif (preg_match('/symfony\//', $package)) {
+                        $composerAsJson['require-dev'][$package] = $this->evaluateVersionString($branchConfig['versions']['symfony']);
+                    }
                 }
             }
         }
@@ -597,12 +610,17 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      *
      * @param array $versions
      *
+     * @param string $minimumVersion
+     *
      * @return string
      */
-    private function evaluateVersionString(array $versions)
+    private function evaluateVersionString(array $versions, $minimumVersion = '1.0')
     {
         $sortedVersions = [];
         foreach ($versions as $version) {
+            if ($version < $minimumVersion) {
+                continue;
+            }
             $version = trim($version, '@dev^');
             list($major, $minor) = explode('.', $version);
             $sortedVersions[$major][] = $minor;

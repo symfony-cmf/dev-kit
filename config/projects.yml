@@ -4,7 +4,7 @@ seo-bundle:
       aware for Search Engine Optimisation (SEO).
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'bundles/seo'
       test_kernel: 'Symfony\Cmf\Bundle\SeoBundle\Tests\Fixtures\App\Kernel'
       deprecation_warnings: 0
@@ -23,7 +23,7 @@ core-bundle:
       a twig extension and php templating helper to walk PHPCR-ODM trees and support for optional translated content.
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'bundles/core'
       test_kernel: Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: 0
@@ -45,7 +45,7 @@ block-bundle:
       provides a few commonly used standard blocks, including the ability to edit them.
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'bundles/block'
       test_kernel: Symfony\Cmf\Bundle\BlockBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: 0
@@ -61,7 +61,7 @@ menu-bundle:
       The MenuBundle provides menus from a doctrine object manager with the help of KnpMenuBundle.
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'bundles/menu'
       deprecation_warnings: 0
       test_kernel: Symfony\Cmf\Bundle\MenuBundle\Tests\Fixtures\App\Kernel
@@ -80,7 +80,7 @@ routing-bundle:
       controller for redirection routes.
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'bundles/routing'
       deprecation_warnings: 0
       test_kernel: Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Kernel
@@ -108,7 +108,7 @@ routing:
       when building Symfony full stack applications.
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'components/routing'
       deprecation_warnings: 0
       php: ['7.1']
@@ -122,7 +122,7 @@ routing-auto:
       This library contains all implementation agnostic code.
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'components/routing'
       deprecation_warnings: 0
       php: ['7.1']
@@ -135,7 +135,7 @@ content-bundle:
       The ContentBundle provides a document for static content and the controller to render it.
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'bundles/routing'
       deprecation_warnings: 0
       test_kernel: Symfony\Cmf\Bundle\ContentBundle\Tests\Fixtures\App\Kernel
@@ -151,7 +151,7 @@ routing-auto-bundle:
       This bundle automatically creates and manages routes for configured persisted document classes.
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'bundles/routing-auto-bundle'
       test_kernel: Symfony\Cmf\Bundle\RoutingAutoBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: 0
@@ -179,7 +179,7 @@ resource-rest-bundle:
 
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'bundles/resource-rest'
       deprecation_warnings: 0
       test_kernel: Symfony\Cmf\Bundle\ResourceRestBundle\Tests\Fixtures\App\Kernel
@@ -211,7 +211,7 @@ resource-bundle:
 
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'bundles/resource-rest'
       deprecation_warnings: 0
       test_kernel: Symfony\Cmf\Bundle\ResourceBundle\Tests\Fixtures\App\Kernel
@@ -226,7 +226,7 @@ sonata-phpcr-admin-integration-bundle:
   description: ""
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'bundles/sonata-phpcr-admin-integration-bundle'
       test_kernel: Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: 0
@@ -251,7 +251,7 @@ resource:
 
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'components/resource'
       deprecation_warnings: 0
       php: ['7.1']
@@ -264,7 +264,7 @@ testing:
 
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'components/testing'
       deprecation_warnings: 0
       php: ['7.1']
@@ -280,7 +280,7 @@ tree-browser-bundle:
 
   branches:
     master:
-      dependency_mode: dev
+      minimum_stability: dev
       docs_path: 'bundle/tree-browser-bundle'
       deprecation_warnings: 0
       php: ['7.1']

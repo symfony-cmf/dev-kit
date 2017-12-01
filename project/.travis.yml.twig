@@ -46,22 +46,22 @@ matrix:
   include:
 {% if failing_allowed_versions.symfony is defined %}
     - php: {{ php|last }}
-      env: DEPS=dev SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
+      env: STABILITY=dev SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
 {% endif %}
     - php: {{ php|last }}
-      env: {% if dependency_mode != 'prod' %}DEPS=dev{%  endif  %} SYMFONY_VERSION={{ versions.symfony|last }}
+      env: {% if minimum_stability != 'prod' %}STABILITY=dev{%  endif  %} SYMFONY_VERSION={{ versions.symfony|last }}
     - php: {{ php|first }}
-      env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION={{ versions.symfony|first }} SYMFONY_DEPRECATIONS_HELPER=weak
+      env: {% if minimum_stability != 'prod' %}STABILITY=dev{%  endif  %} COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION={{ versions.symfony|first }} SYMFONY_DEPRECATIONS_HELPER=weak
 {% if php|length < 3 %}
 {% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
     - php: {{ php|last }}
-      env: {% if dependency_mode != 'prod' %}DEPS=dev{%  endif  %} SYMFONY_VERSION={{ version }}
+      env: {% if minimum_stability != 'prod' %}STABILITY=dev{%  endif  %} SYMFONY_VERSION={{ version }}
 {% endfor %}
 {% else %}
 {% for php_version in php if php_version != php|last and php_version != php|first %}
 {% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
     - php: {{ php_version }}
-      env: {% if dependency_mode != 'prod' %}DEPS=dev{%  endif  %} SYMFONY_VERSION={{ version }}
+      env: {% if minimum_stability != 'prod' %}STABILITY=dev{%  endif  %} SYMFONY_VERSION={{ version }}
 {% endfor %}
 {% endfor %}
 {% endif %}
@@ -72,7 +72,7 @@ matrix:
   allow_failures:
 {% if failing_allowed_versions.symfony is defined %}
     - php: {{ php|last }}
-      env: DEPS=dev SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
+      env: STABILITY=dev SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
 {% endif %}
 {% if make_tasks.test_installation is defined %}
     - env: TEST_INSTALLATION=true
@@ -81,7 +81,7 @@ matrix:
 before_install:
   - phpenv config-rm xdebug.ini || true
   - composer self-update
-  - if [ "$DEPS" = "dev" ]; then perl -pi -e 's/^}$/,"minimum-stability":"dev"}/' composer.json; fi
+  - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi
   - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
 
