@@ -33,9 +33,7 @@ core-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*']
-      failing_allowed_versions:
-        symfony: ['4.0.*']
+        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 block-bundle:
   description: |
       The BlockBundle provides integration with
@@ -237,8 +235,6 @@ sonata-phpcr-admin-integration-bundle:
         test_installation: ~
       versions:
         symfony: ['2.8.*','3.3.*', '3.4.*', '4.0.*']
-      failing_allowed_versions:
-        symfony: ['4.0.*']
 resource:
   excluded_files:
       - .travis.yml.twig
