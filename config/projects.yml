@@ -7,8 +7,8 @@ seo-bundle:
       minimum_stability: dev
       docs_path: 'bundles/seo'
       test_kernel: 'Symfony\Cmf\Bundle\SeoBundle\Tests\Fixtures\App\Kernel'
-      deprecation_warnings: 0
-      php: ['7.1']
+      deprecation_warnings: "/.*each.*/"
+      php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
@@ -26,8 +26,8 @@ core-bundle:
       minimum_stability: dev
       docs_path: 'bundles/core'
       test_kernel: Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Kernel
-      deprecation_warnings: 0
-      php: ['7.1']
+      deprecation_warnings: "/.*each.*/"
+      php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
@@ -61,9 +61,9 @@ menu-bundle:
     master:
       minimum_stability: dev
       docs_path: 'bundles/menu'
-      deprecation_warnings: 0
+      deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\MenuBundle\Tests\Fixtures\App\Kernel
-      php: ['7.1']
+      php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
@@ -80,16 +80,16 @@ routing-bundle:
     master:
       minimum_stability: dev
       docs_path: 'bundles/routing'
-      deprecation_warnings: 0
+      deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Kernel
-      php: ['7.1']
+      php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
         functional_tests_orm: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*', '4.0.*']
+        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 routing:
   description: |
       The Symfony CMF Routing component extends the Symfony routing component with additional features:
@@ -108,8 +108,8 @@ routing:
     master:
       minimum_stability: dev
       docs_path: 'components/routing'
-      deprecation_warnings: 0
-      php: ['7.1']
+      deprecation_warnings: "/.*each.*/"
+      php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
       versions:
@@ -122,8 +122,8 @@ routing-auto:
     master:
       minimum_stability: dev
       docs_path: 'components/routing'
-      deprecation_warnings: 0
-      php: ['7.1']
+      deprecation_warnings: "/.*each.*/"
+      php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
       versions:
@@ -135,9 +135,9 @@ content-bundle:
     master:
       minimum_stability: dev
       docs_path: 'bundles/routing'
-      deprecation_warnings: 0
+      deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\ContentBundle\Tests\Fixtures\App\Kernel
-      php: ['7.1']
+      php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
@@ -152,8 +152,8 @@ routing-auto-bundle:
       minimum_stability: dev
       docs_path: 'bundles/routing-auto-bundle'
       test_kernel: Symfony\Cmf\Bundle\RoutingAutoBundle\Tests\Fixtures\App\Kernel
-      deprecation_warnings: 0
-      php: ['7.1']
+      deprecation_warnings: "/.*each.*/"
+      php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
@@ -179,9 +179,9 @@ resource-rest-bundle:
     master:
       minimum_stability: dev
       docs_path: 'bundles/resource-rest'
-      deprecation_warnings: 0
+      deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\ResourceRestBundle\Tests\Fixtures\App\Kernel
-      php: ['7.1']
+      php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
         test_installation: ~
@@ -211,9 +211,9 @@ resource-bundle:
     master:
       minimum_stability: dev
       docs_path: 'bundles/resource-rest'
-      deprecation_warnings: 0
+      deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\ResourceBundle\Tests\Fixtures\App\Kernel
-      php: ['7.1']
+      php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
@@ -249,8 +249,8 @@ resource:
     master:
       minimum_stability: dev
       docs_path: 'components/resource'
-      deprecation_warnings: 0
-      php: ['7.1']
+      deprecation_warnings: "/.*each.*/"
+      php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
 testing:
@@ -262,8 +262,8 @@ testing:
     master:
       minimum_stability: dev
       docs_path: 'components/testing'
-      deprecation_warnings: 0
-      php: ['7.1']
+      deprecation_warnings: "/.*each.*/"
+      php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
       versions:
@@ -278,8 +278,8 @@ tree-browser-bundle:
     master:
       minimum_stability: dev
       docs_path: 'bundle/tree-browser-bundle'
-      deprecation_warnings: 0
-      php: ['7.1']
+      deprecation_warnings: "/.*each.*/"
+      php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
         test_installation: ~
