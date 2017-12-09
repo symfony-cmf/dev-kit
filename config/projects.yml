@@ -46,8 +46,8 @@ block-bundle:
       minimum_stability: dev
       docs_path: 'bundles/block'
       test_kernel: Symfony\Cmf\Bundle\BlockBundle\Tests\Fixtures\App\Kernel
-      deprecation_warnings: 0
-      php: ['7.1']
+      deprecation_warnings: "/.*each.*/"
+      php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~

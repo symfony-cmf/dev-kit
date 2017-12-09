@@ -599,6 +599,10 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             unset($composerAsJson['prefer-stable']);
         }
 
+        // add type information if not set
+        if (preg_match('/bundle/', $composerAsJson['name'])) {
+            $composerAsJson['type'] = 'symfony-bundle';
+        }
         $composerAsString = json_encode($composerAsJson, JSON_PRETTY_PRINT);
         $composerAsString = str_replace('\/', '/', $composerAsString);
         $composerAsString .= PHP_EOL;
