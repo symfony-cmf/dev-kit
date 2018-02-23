@@ -264,6 +264,7 @@ testing:
       docs_path: 'components/testing'
       deprecation_warnings: "/.*each.*/"
       php: ['7.1', '7.2']
+      phpunit_version: 6.5
       make_tasks:
         unit_tests: ~
       versions:
