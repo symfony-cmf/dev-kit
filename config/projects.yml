@@ -43,6 +43,7 @@ block-bundle:
       provides a few commonly used standard blocks, including the ability to edit them.
   branches:
     master:
+      unlimited_memory: true
       minimum_stability: dev
       docs_path: 'bundles/block'
       test_kernel: Symfony\Cmf\Bundle\BlockBundle\Tests\Fixtures\App\Kernel

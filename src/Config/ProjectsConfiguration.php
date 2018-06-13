@@ -56,6 +56,7 @@ class ProjectsConfiguration implements ConfigurationInterface
                                 ->defaultValue([])
                                 ->prototype('array')
                                     ->children()
+                                        ->booleanNode('unlimited_memory')->defaultFalse()->end()
                                         ->scalarNode('minimum_stability')->defaultValue('prod')->end()
                                         ->arrayNode('php')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->arrayNode('services')->prototype('scalar')->defaultValue([])->end()->end()

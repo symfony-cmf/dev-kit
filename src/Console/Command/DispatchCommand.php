@@ -465,11 +465,15 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         if (in_array(substr($localPath, 8), $projectConfig['excluded_files'], true)) {
             return;
         }
-
+        $notRendered = ['.', '..'];
+        $branchConfig = $projectConfig['branches'][$branchName];
+        if (!isset($branchConfig['unlimited_memory']) || !$branchConfig['unlimited_memory']) {
+            $notRendered[] = 'travis.php.ini';
+        }
         if ('dir' === $localFileType) {
             $localDirectory = dir($localFullPath);
             while (false !== ($entry = $localDirectory->read())) {
-                if (!in_array($entry, ['.', '..'], true)) {
+                if (!in_array($entry, $notRendered, true)) {
                     $this->renderFile(
                         $package,
                         $repositoryName,
