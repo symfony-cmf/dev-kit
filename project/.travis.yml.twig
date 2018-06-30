@@ -51,7 +51,7 @@ matrix:
     - php: {{ php|last }}
       env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }}{%  endif  %} SYMFONY_VERSION={{ versions.symfony|last }}
     - php: {{ php|first }}
-      env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }}{%  endif  %} COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION={{ versions.symfony|first }} SYMFONY_DEPRECATIONS_HELPER=weak
+      env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION={{ versions.symfony|first }} SYMFONY_DEPRECATIONS_HELPER=weak
 {% if php|length < 3 %}
 {% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
     - php: {{ php|last }}
