@@ -264,7 +264,7 @@ testing:
       minimum_stability: dev
       docs_path: 'components/testing'
       deprecation_warnings: "/.*each.*/"
-      php: ['7.1', '7.2']
+      php: ['5.6','7.0','7.1', '7.2']
       make_tasks:
         unit_tests: ~
       versions:
