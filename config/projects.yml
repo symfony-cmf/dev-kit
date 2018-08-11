@@ -4,7 +4,6 @@ seo-bundle:
       aware for Search Engine Optimisation (SEO).
   branches:
     master:
-      minimum_stability: dev
       docs_path: 'bundles/seo'
       test_kernel: 'Symfony\Cmf\Bundle\SeoBundle\Tests\Fixtures\App\Kernel'
       deprecation_warnings: "/.*each.*/"
@@ -23,7 +22,6 @@ core-bundle:
       a twig extension and php templating helper to walk PHPCR-ODM trees and support for optional translated content.
   branches:
     master:
-      minimum_stability: dev
       docs_path: 'bundles/core'
       test_kernel: Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: "/.*each.*/"
