@@ -14,88 +14,85 @@
 ############################################################################
 
 language: php
-
-php:
-  - 7.1
-
 sudo: false
-
 cache:
-  directories:
-    - .phpunit
-    - $HOME/.composer/cache/files
-
+    directories:
+        - $HOME/.composer/cache/files
+        - $HOME/symfony-bridge/.phpunit
 env:
-{% if versions.symfony|length > 0 %}
-  matrix: SYMFONY_VERSION={{ versions.symfony|last }}
-  global:
-{% endif %}
-{% if failing_allowed_versions.symfony|length > 0 or versions.symfony|length > 0 %}
-    - SYMFONY_DEPRECATIONS_HELPER="{{ deprecation_warnings }}"
-    - SYMFONY_PHPUNIT_DIR=.phpunit SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
-{% endif %}
+    global:
+        - PHPUNIT_FLAGS="-v"
+        - SYMFONY_PHPUNIT_DIR="$HOME/symfony-bridge/.phpunit"
+        - SYMFONY_PHPUNIT_DIR=.phpunit SYMFONY_PHPUNIT_REMOVE="symfony/yaml"
+        - SYMFONY_DEPRECATIONS_HELPER={{ deprecation_warnings }}
 {% if test_kernel %}
-    - KERNEL_CLASS={{ test_kernel }}
+        - KERNEL_CLASS={{ test_kernel }}
 {% endif %}
 {% if phpunit_version %}
-    - SYMFONY_PHPUNIT_VERSION={{ phpunit_version }}
+        - SYMFONY_PHPUNIT_VERSION={{ phpunit_version }}
 {% endif %}
-    - TEST_INSTALLATION=false
+        - TEST_INSTALLATION=false
 
 matrix:
-  include:
-{% if failing_allowed_versions.symfony is defined %}
-    - php: {{ php|last }}
-      env: STABILITY={{ minimum_stability }} SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
-{% endif %}
-    - php: {{ php|last }}
-      env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }}{%  endif  %} SYMFONY_VERSION={{ versions.symfony|last }}
-    - php: {{ php|first }}
-      env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }}{%  endif  %} COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION={{ versions.symfony|first }} SYMFONY_DEPRECATIONS_HELPER=weak
-{% if php|length < 3 %}
-{% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
-    - php: {{ php|last }}
-      env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }}{%  endif  %} SYMFONY_VERSION={{ version }}
-{% endfor %}
-{% else %}
-{% for php_version in php if php_version != php|last and php_version != php|first %}
-{% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
-    - php: {{ php_version }}
-      env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }}{%  endif  %} SYMFONY_VERSION={{ version }}
-{% endfor %}
-{% endfor %}
-{% endif %}
-{% if make_tasks.test_installation is defined %}
-    - env: TEST_INSTALLATION=true
-{% endif %}
-  fast_finish: true
-  allow_failures:
-{% if failing_allowed_versions.symfony is defined %}
-    - php: {{ php|last }}
-      env: STABILITY=dev SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
-{% endif %}
-{% if make_tasks.test_installation is defined %}
-    - env: TEST_INSTALLATION=true
+    fast_finish: true
+    include:
+        - php: {{ php|last }}
+          env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }}{%  endif  %} COMPOSER_FLAGS="--prefer-lowest" SYMFONY_DEPRECATIONS_HELPER=weak_vendors
+{% if php|last != php|first %}
+        - php: {{ php|first }}
+          env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }}{%  endif  %} COMPOSER_FLAGS="--prefer-lowest" SYMFONY_DEPRECATIONS_HELPER=weak_vendors
 {% endif %}
 
+{% for php_version in php %}
+        - php: {{ php_version }}
+{% if minimum_stability != 'prod' and  php_version == php|last %}
+          env: STABILITY={{ minimum_stability }} COVERAGE=true PHPUNIT_FLAGS="-v --coverage-text"
+{% elseif  minimum_stability != 'prod' %}
+          env: STABILITY={{ minimum_stability }}
+{% elseif php_version == php|last %}
+          env: COVERAGE=true PHPUNIT_FLAGS="-v --coverage-text"
+{% endif %}
+{% endfor %}
+
+{% for version in versions.symfony %}
+{% if version == '2.8.*' %}
+        - php: {{ php|last }}
+          env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }}{%  endif  %} DEPENDENCIES="symfony/lts:^2"
+{% elseif version == '3.4.*' %}
+        - php: {{ php|last }}
+          env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }}{%  endif  %} DEPENDENCIES="symfony/lts:^3"
+{% endif %}
+{% endfor %}
+        - php: {{ php|last }}
+          env: STABILITY=dev
+{% if make_tasks.test_installation is defined %}
+        - env: TEST_INSTALLATION=true
+{% endif %}
+    allow_failures:
+{% if make_tasks.test_installation is defined %}
+        - env: TEST_INSTALLATION=true
+{% endif %}
+        - php: {{ php|last }}
+          env: STABILITY=dev
+
 before_install:
-  - phpenv config-rm xdebug.ini || true
-  - composer self-update
-  - composer validate --no-check-all --ansi
-  - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; composer config prefer-stable true; fi;
-  - if [ "$SYMFONY_VERSION" != "" ]; then composer require symfony/symfony:${SYMFONY_VERSION} --no-update; fi
-  - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+    - composer self-update
+    - composer validate --no-check-all --ansi
+    - if [[ $COVERAGE != true ]]; then phpenv config-rm xdebug.ini || true; fi
+    - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
+    - if ! [ -v "$DEPENDENCIES" ]; then composer require --no-update ${DEPENDENCIES}; fi;
+    - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
 
 {% if unlimited_memory %}
 install:
-  - phpenv config-add travis.php.ini
-  - php -ini | grep memory_limit
-  - travis_wait composer update --prefer-dist $COMPOSER_FLAGS
+    - phpenv config-add travis.php.ini
+    - php -ini | grep memory_limit
+    - travis_wait composer update --prefer-dist $COMPOSER_FLAGS
 {% else %}
 install: travis_wait composer update --prefer-dist $COMPOSER_FLAGS
 {% endif %}
 script:
-  - if [ "${TEST_INSTALLATION}" == true ]; then make test_installation; else make test; fi
+    - if [ "${TEST_INSTALLATION}" == true ]; then make test_installation; else make test; fi
 
 notifications:
   irc: "irc.freenode.org#symfony-cmf"

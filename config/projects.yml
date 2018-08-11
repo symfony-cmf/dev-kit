@@ -4,7 +4,6 @@ seo-bundle:
       aware for Search Engine Optimisation (SEO).
   branches:
     master:
-      minimum_stability: dev
       docs_path: 'bundles/seo'
       test_kernel: 'Symfony\Cmf\Bundle\SeoBundle\Tests\Fixtures\App\Kernel'
       deprecation_warnings: "/.*each.*/"
@@ -15,7 +14,7 @@ seo-bundle:
         functional_tests_orm: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*',  '3.3.*', '3.4.*', '4.0.*']
+        symfony: ['2.8.*', '3.4.*', '4.0.*']
 core-bundle:
   description: |
       The CoreBundle for the Symfony content management framework provides common functionality,
@@ -23,7 +22,6 @@ core-bundle:
       a twig extension and php templating helper to walk PHPCR-ODM trees and support for optional translated content.
   branches:
     master:
-      minimum_stability: dev
       docs_path: 'bundles/core'
       test_kernel: Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: "/.*each.*/"
@@ -33,7 +31,7 @@ core-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
+        symfony: ['2.8.*', '3.4.*', '4.0.*']
 block-bundle:
   description: |
       The BlockBundle provides integration with
@@ -44,7 +42,6 @@ block-bundle:
   branches:
     master:
       unlimited_memory: true
-      minimum_stability: dev
       docs_path: 'bundles/block'
       test_kernel: Symfony\Cmf\Bundle\BlockBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: "/.*each.*/"
@@ -54,7 +51,7 @@ block-bundle:
         functional_tests_phpcr: ~
         test_installation: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
+        symfony: ['2.8.*', '3.4.*', '4.0.*']
 menu-bundle:
   description: |
       The MenuBundle provides menus from a doctrine object manager with the help of KnpMenuBundle.
