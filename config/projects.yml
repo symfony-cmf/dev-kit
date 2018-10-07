@@ -15,6 +15,18 @@ seo-bundle:
         test_installation: ~
       versions:
         symfony: ['2.8.*',  '3.3.*', '3.4.*', '4.0.*']
+    2.1:
+      docs_path: 'bundles/seo'
+      test_kernel: 'Symfony\Cmf\Bundle\SeoBundle\Tests\Fixtures\App\Kernel'
+      deprecation_warnings: "/.*each.*/"
+      php: ['7.1', '7.2']
+      make_tasks:
+        unit_tests: ~
+        functional_tests_phpcr: ~
+        functional_tests_orm: ~
+        test_installation: ~
+      versions:
+        symfony: ['2.8.*',  '3.3.*', '3.4.*', '4.0.*']
 core-bundle:
   description: |
       The CoreBundle for the Symfony content management framework provides common functionality,
@@ -42,7 +54,6 @@ block-bundle:
   branches:
     master:
       unlimited_memory: true
-      minimum_stability: dev
       docs_path: 'bundles/block'
       test_kernel: Symfony\Cmf\Bundle\BlockBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: "/.*each.*/"
@@ -58,7 +69,6 @@ menu-bundle:
       The MenuBundle provides menus from a doctrine object manager with the help of KnpMenuBundle.
   branches:
     master:
-      minimum_stability: dev
       docs_path: 'bundles/menu'
       deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\MenuBundle\Tests\Fixtures\App\Kernel
@@ -77,7 +87,6 @@ routing-bundle:
       controller for redirection routes.
   branches:
     master:
-      minimum_stability: dev
       docs_path: 'bundles/routing'
       deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Kernel
@@ -105,7 +114,6 @@ routing:
       when building Symfony full stack applications.
   branches:
     master:
-      minimum_stability: dev
       docs_path: 'components/routing'
       deprecation_warnings: "/.*each.*/"
       php: ['7.1', '7.2']
@@ -119,7 +127,6 @@ routing-auto:
       This library contains all implementation agnostic code.
   branches:
     master:
-      minimum_stability: dev
       docs_path: 'components/routing'
       deprecation_warnings: "/.*each.*/"
       php: ['7.1', '7.2']
@@ -132,7 +139,6 @@ content-bundle:
       The ContentBundle provides a document for static content and the controller to render it.
   branches:
     master:
-      minimum_stability: dev
       docs_path: 'bundles/routing'
       deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\ContentBundle\Tests\Fixtures\App\Kernel
@@ -148,7 +154,6 @@ routing-auto-bundle:
       This bundle automatically creates and manages routes for configured persisted document classes.
   branches:
     master:
-      minimum_stability: dev
       docs_path: 'bundles/routing-auto-bundle'
       test_kernel: Symfony\Cmf\Bundle\RoutingAutoBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: "/.*each.*/"
@@ -176,7 +181,6 @@ resource-rest-bundle:
 
   branches:
     master:
-      minimum_stability: dev
       docs_path: 'bundles/resource-rest'
       deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\ResourceRestBundle\Tests\Fixtures\App\Kernel
@@ -208,7 +212,6 @@ resource-bundle:
 
   branches:
     master:
-      minimum_stability: dev
       docs_path: 'bundles/resource-rest'
       deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\ResourceBundle\Tests\Fixtures\App\Kernel
@@ -246,7 +249,6 @@ resource:
 
   branches:
     master:
-      minimum_stability: dev
       docs_path: 'components/resource'
       deprecation_warnings: "/.*each.*/"
       php: ['7.1', '7.2']
@@ -275,7 +277,6 @@ tree-browser-bundle:
 
   branches:
     master:
-      minimum_stability: dev
       docs_path: 'bundle/tree-browser-bundle'
       deprecation_warnings: "/.*each.*/"
       php: ['7.1', '7.2']

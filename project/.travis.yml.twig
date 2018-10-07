@@ -49,19 +49,19 @@ matrix:
       env: STABILITY={{ minimum_stability }} SYMFONY_VERSION={{ failing_allowed_versions.symfony|first }}
 {% endif %}
     - php: {{ php|last }}
-      env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }}{%  endif  %} SYMFONY_VERSION={{ versions.symfony|last }}
+      env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }} {%  endif  %}SYMFONY_VERSION={{ versions.symfony|last }}
     - php: {{ php|first }}
       env: COMPOSER_FLAGS="--prefer-lowest" SYMFONY_VERSION={{ versions.symfony|first }} SYMFONY_DEPRECATIONS_HELPER=weak
 {% if php|length < 3 %}
 {% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
     - php: {{ php|last }}
-      env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }}{%  endif  %} SYMFONY_VERSION={{ version }}
+      env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }} {%  endif  %}SYMFONY_VERSION={{ version }}
 {% endfor %}
 {% else %}
 {% for php_version in php if php_version != php|last and php_version != php|first %}
 {% for version in versions.symfony if version != versions.symfony|first and version != versions.symfony|last %}
     - php: {{ php_version }}
-      env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }}{%  endif  %} SYMFONY_VERSION={{ version }}
+      env: {% if minimum_stability != 'prod' %}STABILITY={{ minimum_stability }} {%  endif  %}SYMFONY_VERSION={{ version }}
 {% endfor %}
 {% endfor %}
 {% endif %}
