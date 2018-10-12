@@ -16,6 +16,7 @@ use Sonata\DevKit\Console\Command\DependsCommand;
 use Sonata\DevKit\Console\Command\DispatchCommand;
 use Sonata\DevKit\Console\Command\MergeConflictsCommand;
 use Sonata\DevKit\Console\Command\PullRequestAutoMergeCommand;
+use Sonata\DevKit\Console\Command\ReleaseManagerCommand;
 use Symfony\Component\Console\Application as BaseApplication;
 
 /**
@@ -35,5 +36,6 @@ class Application extends BaseApplication
         $this->add(new MergeConflictsCommand());
         $this->add(new AutoMergeCommand());
         $this->add(new PullRequestAutoMergeCommand());
+        $this->add(new ReleaseManagerCommand());
     }
 }
