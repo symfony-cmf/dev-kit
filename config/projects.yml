@@ -4,6 +4,7 @@ seo-bundle:
       aware for Search Engine Optimisation (SEO).
   branches:
     master:
+      target_branch: 2.x
       docs_path: 'bundles/seo'
       test_kernel: 'Symfony\Cmf\Bundle\SeoBundle\Tests\Fixtures\App\Kernel'
       deprecation_warnings: "/.*each.*/"
@@ -12,19 +13,6 @@ seo-bundle:
         unit_tests: ~
         functional_tests_phpcr: ~
         functional_tests_orm: ~
-        test_installation: ~
-      versions:
-        symfony: ['2.8.*',  '3.3.*', '3.4.*', '4.0.*']
-    2.1:
-      docs_path: 'bundles/seo'
-      test_kernel: 'Symfony\Cmf\Bundle\SeoBundle\Tests\Fixtures\App\Kernel'
-      deprecation_warnings: "/.*each.*/"
-      php: ['7.1', '7.2']
-      make_tasks:
-        unit_tests: ~
-        functional_tests_phpcr: ~
-        functional_tests_orm: ~
-        test_installation: ~
       versions:
         symfony: ['2.8.*',  '3.3.*', '3.4.*', '4.0.*']
 core-bundle:
@@ -34,6 +22,7 @@ core-bundle:
       a twig extension and php templating helper to walk PHPCR-ODM trees and support for optional translated content.
   branches:
     master:
+      target_branch: 2.x
       docs_path: 'bundles/core'
       test_kernel: Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: "/.*each.*/"
@@ -41,7 +30,6 @@ core-bundle:
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
-        test_installation: ~
       versions:
         symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 block-bundle:
@@ -53,6 +41,7 @@ block-bundle:
       provides a few commonly used standard blocks, including the ability to edit them.
   branches:
     master:
+      target_branch: 2.x
       unlimited_memory: true
       docs_path: 'bundles/block'
       test_kernel: Symfony\Cmf\Bundle\BlockBundle\Tests\Fixtures\App\Kernel
@@ -61,7 +50,6 @@ block-bundle:
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
-        test_installation: ~
       versions:
         symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 menu-bundle:
@@ -69,6 +57,7 @@ menu-bundle:
       The MenuBundle provides menus from a doctrine object manager with the help of KnpMenuBundle.
   branches:
     master:
+      target_branch: 2.x
       docs_path: 'bundles/menu'
       deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\MenuBundle\Tests\Fixtures\App\Kernel
@@ -76,7 +65,6 @@ menu-bundle:
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
-        test_installation: ~
       versions:
         symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 routing-bundle:
@@ -87,6 +75,7 @@ routing-bundle:
       controller for redirection routes.
   branches:
     master:
+      target_branch: 2.x
       docs_path: 'bundles/routing'
       deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Kernel
@@ -95,9 +84,9 @@ routing-bundle:
         unit_tests: ~
         functional_tests_phpcr: ~
         functional_tests_orm: ~
-        test_installation: ~
       versions:
         symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
+        
 routing:
   description: |
       The Symfony CMF Routing component extends the Symfony routing component with additional features:
@@ -114,6 +103,7 @@ routing:
       when building Symfony full stack applications.
   branches:
     master:
+      target_branch: 2.x
       docs_path: 'components/routing'
       deprecation_warnings: "/.*each.*/"
       php: ['7.1', '7.2']
@@ -127,6 +117,7 @@ routing-auto:
       This library contains all implementation agnostic code.
   branches:
     master:
+      target_branch: 2.x
       docs_path: 'components/routing'
       deprecation_warnings: "/.*each.*/"
       php: ['7.1', '7.2']
@@ -139,6 +130,7 @@ content-bundle:
       The ContentBundle provides a document for static content and the controller to render it.
   branches:
     master:
+      target_branch: 2.x
       docs_path: 'bundles/routing'
       deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\ContentBundle\Tests\Fixtures\App\Kernel
@@ -146,7 +138,6 @@ content-bundle:
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
-        test_installation: ~
       versions:
         symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 routing-auto-bundle:
@@ -154,6 +145,7 @@ routing-auto-bundle:
       This bundle automatically creates and manages routes for configured persisted document classes.
   branches:
     master:
+      target_branch: 1.x
       docs_path: 'bundles/routing-auto-bundle'
       test_kernel: Symfony\Cmf\Bundle\RoutingAutoBundle\Tests\Fixtures\App\Kernel
       deprecation_warnings: "/.*each.*/"
@@ -161,7 +153,6 @@ routing-auto-bundle:
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
-        test_installation: ~
       versions:
         symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 resource-rest-bundle:
@@ -181,13 +172,13 @@ resource-rest-bundle:
 
   branches:
     master:
+      target_branch: 1.0
       docs_path: 'bundles/resource-rest'
       deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\ResourceRestBundle\Tests\Fixtures\App\Kernel
       php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
-        test_installation: ~
       versions:
         symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 resource-bundle:
@@ -212,6 +203,7 @@ resource-bundle:
 
   branches:
     master:
+      target_branch: 1.0
       docs_path: 'bundles/resource-rest'
       deprecation_warnings: "/.*each.*/"
       test_kernel: Symfony\Cmf\Bundle\ResourceBundle\Tests\Fixtures\App\Kernel
@@ -219,13 +211,13 @@ resource-bundle:
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
-        test_installation: ~
       versions:
         symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
 sonata-phpcr-admin-integration-bundle:
   description: ""
   branches:
     master:
+      target_branch: 1.x
       minimum_stability: dev
       docs_path: 'bundles/sonata-phpcr-admin-integration-bundle'
       test_kernel: Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Tests\Fixtures\App\Kernel
@@ -234,7 +226,6 @@ sonata-phpcr-admin-integration-bundle:
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
-        test_installation: ~
       versions:
         symfony: ['2.8.*','3.3.*', '3.4.*', '4.0.*']
 resource:
@@ -249,6 +240,7 @@ resource:
 
   branches:
     master:
+      target_branch: 1.0
       docs_path: 'components/resource'
       deprecation_warnings: "/.*each.*/"
       php: ['7.1', '7.2']
@@ -261,6 +253,7 @@ testing:
 
   branches:
     master:
+      target_branch: 2.x
       minimum_stability: dev
       docs_path: 'components/testing'
       deprecation_warnings: "/.*each.*/"
@@ -277,11 +270,11 @@ tree-browser-bundle:
 
   branches:
     master:
+      target_branch: 2.x
       docs_path: 'bundle/tree-browser-bundle'
       deprecation_warnings: "/.*each.*/"
       php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
-        test_installation: ~
       versions:
         symfony: ['2.8.*', '3.3', '3.4.*', '4.0.*']

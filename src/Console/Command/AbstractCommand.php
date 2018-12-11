@@ -22,6 +22,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Yaml\Yaml;
+use Composer\Semver;
+use Packagist\Api\Result\Package\Version;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
@@ -115,5 +117,30 @@ abstract class AbstractCommand extends Command
         $repositoryArray = explode('/', $package->getRepository());
 
         return str_replace('.git', '', end($repositoryArray));
+    }
+
+    /**
+     * @param Packaage $package
+     * 
+     * @return []
+     */
+    final protected function getStableVersions(Package $package): array
+    {
+        $stableVersions = array_filter(
+            array_keys($package->getVersions()),
+            function ($version) {
+                try {
+                    if ('stable' !== Semver\VersionParser::parseStability($version)) {
+                        return false;
+                    }
+                } catch (\Exception $e) {
+                    return false;
+                }
+
+                return true;
+            }
+        );
+
+        return Semver\Semver::rsort($stableVersions);
     }
 }

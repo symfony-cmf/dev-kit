@@ -93,6 +93,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 }
             } catch (ExceptionInterface $e) {
                 $this->io->error('Failed with message: ' . $e->getMessage());
+                $this->io->writeln($e->getTraceAsString(), OutputInterface::VERBOSITY_DEBUG);
             }
         }
 
@@ -299,7 +300,17 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         if (!$this->apply) {
             return;
         }
+        foreach ($branches as $branch) {
+            $this->updateBranch($branch, $repositoryName);
+            if (isset($projectConfig['branches'][$branch]['target_branch'])) {
+                $this->updateBranch($projectConfig['branches'][$branch]['target_branch'], $repositoryName);
+            }
+        }
 
+    }
+
+    private function updateBranch($branch, $repositoryName)
+    {
         $protectionConfig = [
             'required_status_checks' => [
                 'strict' => false,
@@ -319,11 +330,11 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             'restrictions' => null,
             'enforce_admins' => false,
         ];
-        foreach ($branches as $branch) {
-            $this->githubClient->repo()->protection()
-                ->update($this->githubGroup, $repositoryName, $branch, $protectionConfig);
-        }
-        $this->io->comment('Branches protection applied.');
+
+        $this->githubClient->repo()->protection()
+            ->update($this->githubGroup, $repositoryName, $branch, $protectionConfig);
+
+        $this->io->comment('Branches protection applied to branch '.$branch);
     }
 
     /**
@@ -497,8 +508,10 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $branchConfig = $projectConfig['branches'][$branchName];
         $localPathInfo = pathinfo($localPath);
         reset($projectConfig['branches']);
+        $stableVersions = $this->getStableVersions($package);
+        $latestStableVersion = array_shift($stableVersions);
         $unstableBranch = key($projectConfig['branches']);
-        $stableBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $unstableBranch;
+        $stableBranch =  $branchConfig['target_branch'] ?: $unstableBranch;
         $legacyBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $stableBranch;
         if (array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
             $distPath = dirname($distPath) . '/' . basename($distPath, '.twig');
@@ -507,14 +520,19 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $projectConfig,
                 $branchConfig,
                 [
-                    'package_title' => Inflector::ucwords(str_replace(['cmf', '/', '-'], ['CMF', ' ', ' '], $package->getName())),
+                    'package_title' => Inflector::ucwords(
+                        str_replace(['cmf', '/', '-'],
+                        ['CMF', ' ', ' '],
+                        $package->getName())
+                    ),
                     'package_description' => $package->getDescription(),
                     'packagist_name' => $package->getName(),
                     'package_name' => $package->getName(),
                     'repository_name' => $repositoryName,
                     'current_branch' => $branchName,
                     'unstable_branch' => $unstableBranch,
-                    'stable_branch' => $stableBranch,
+                    'stable_version' => $latestStableVersion,
+                    'stable_branch' => $branchConfig['target_branch'],
                     'legacy_branch' => $legacyBranch,
                 ]
             )));
@@ -526,6 +544,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 '{{ repository_name }}',
                 '{{ current_branch }}',
                 '{{ unstable_branch }}',
+                '{{ stable_version }}',
                 '{{ stable_branch }}',
                 '{{ legacy_branch }}',
                 '{{ docs_path }}',
@@ -537,7 +556,8 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $repositoryName,
                 $branchName,
                 $unstableBranch,
-                $stableBranch,
+                $latestStableVersion,
+                $branchConfig['target_branch'],
                 $legacyBranch,
                 $branchConfig['docs_path'],
                 str_replace([$this->packagistGroup . '/', '-bundle'], '', $package->getName()),
@@ -548,6 +568,9 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     }
 
     /**
+     * Takes care on correct version in own packages and in symfony packiges.
+     * Also sets the target version in composer.json file.
+     *
      * @param string $path
      * @param array $projectConfig
      *
@@ -607,6 +630,17 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         if (preg_match('/bundle/', $composerAsJson['name'])) {
             $composerAsJson['type'] = 'symfony-bundle';
         }
+
+        // takes care on correct target branch for master 
+        $targetMasterBranch = $branchConfig['target_branch'].'-dev';
+        if (!isset($composerAsJson['extra'])) {
+            $composerAsJson['extra'] = ['branch-alias' => ['dev-master' => $targetMasterBranch]];
+        } elseif (!isset($composerAsJson['extra']['branch-alias'])) {
+            $composerAsJson['extra'][branch-alias] = ['dev-master' => $targetMasterBranch];
+        } elseif (!isset($composerAsJson['extra']['branch-alias']['dev-master'])) {
+            $composerAsJson['extra']['branch-alias']['dev-master'] = $targetMasterBranch;
+        }
+
         $composerAsString = json_encode($composerAsJson, JSON_PRETTY_PRINT);
         $composerAsString = str_replace('\/', '/', $composerAsString);
         $composerAsString .= PHP_EOL;
