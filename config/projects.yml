@@ -252,11 +252,11 @@ resource:
       php: ['7.1', '7.2']
       make_tasks:
         unit_tests: ~
+
 testing:
   description: |
     **NOTE**: This is an internal tool and is not intended to be used outside of
     the context of the CMF.
-
   branches:
     master:
       minimum_stability: dev
@@ -266,7 +266,9 @@ testing:
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
+        symfony: ['^2.8.18', '3.3.*', '3.4.*', '4.0.*']
+      phpunit_version: '6.5'
+
 tree-browser-bundle:
   excluded_files:
       - .travis.yml.twig
