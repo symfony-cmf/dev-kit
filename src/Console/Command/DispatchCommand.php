@@ -18,22 +18,19 @@ use Symfony\Component\Filesystem\Filesystem;
 final class DispatchCommand extends AbstractNeedApplyCommand
 {
     const LABEL_NOTHING_CHANGED = 'Nothing to be changed.';
-
+    public const PACKAGIST_GROUP = 'symfony-cmf';
     /**
      * @var GitWrapper
      */
     private $gitWrapper;
-
     /**
      * @var Filesystem
      */
     private $fileSystem;
-
     /**
      * @var \Twig_Environment
      */
     private $twig;
-
     /**
      * @var string[]
      */
@@ -73,7 +70,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
     {
         $notConfiguredProjects = array_diff($this->projects, array_keys($this->configs['projects']));
         if (count($notConfiguredProjects)) {
-            $this->io->error('Some specified projects are not configured: '.implode(', ', $notConfiguredProjects));
+            $this->io->error('Some specified projects are not configured: ' . implode(', ', $notConfiguredProjects));
 
             return 1;
         }
@@ -129,7 +126,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         if (count($infoToUpdate)) {
-            $this->io->comment('Following info have to be changed: '.implode(', ', array_keys($infoToUpdate)).'.');
+            $this->io->comment('Following info have to be changed: ' . implode(', ', array_keys($infoToUpdate)) . '.');
             if ($this->apply) {
                 $this->githubClient->repo()->update(
                     $this->githubGroup,
@@ -177,20 +174,28 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             } elseif ($shouldBeUpdated) {
                 $state = 'Updated';
                 if ($this->apply) {
-                    $this->githubClient->repo()->labels()->update($this->githubGroup, $repositoryName, $name, [
-                        'name' => $name,
-                        'color' => $configuredColor,
-                    ]);
+                    $this->githubClient->repo()->labels()->update(
+                        $this->githubGroup,
+                        $repositoryName,
+                        $name,
+                        [
+                            'name' => $name,
+                            'color' => $configuredColor,
+                        ]
+                    );
                 }
             }
 
             if ($state) {
-                array_push($rows, [
-                    $name,
-                    '#' . $color,
-                    $configuredColor ? '#' . $configuredColor : 'N/A',
-                    $state,
-                ]);
+                array_push(
+                    $rows,
+                    [
+                        $name,
+                        '#' . $color,
+                        $configuredColor ? '#' . $configuredColor : 'N/A',
+                        $state,
+                    ]
+                );
             }
         }
 
@@ -198,17 +203,24 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $color = $label['color'];
 
             if ($this->apply) {
-                $this->githubClient->repo()->labels()->create($this->githubGroup, $repositoryName, [
-                    'name' => $name,
-                    'color' => $color,
-                ]);
+                $this->githubClient->repo()->labels()->create(
+                    $this->githubGroup,
+                    $repositoryName,
+                    [
+                        'name' => $name,
+                        'color' => $color,
+                    ]
+                );
             }
             array_push($rows, [$name, 'N/A', '#' . $color, 'Created']);
         }
 
-        usort($rows, function ($row1, $row2) {
-            return strcasecmp($row1[0], $row2[0]);
-        });
+        usort(
+            $rows,
+            function ($row1, $row2) {
+                return strcasecmp($row1[0], $row2[0]);
+            }
+        );
 
         if (empty($rows)) {
             $this->io->comment(static::LABEL_NOTHING_CHANGED);
@@ -246,8 +258,10 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         // First, check if the hook exists.
         $devKitHook = null;
         foreach ($this->githubClient->repo()->hooks()->all($this->githubGroup, $repositoryName) as $hook) {
-            if (array_key_exists('url', $hook['config'])
-                && 0 === strncmp($hook['config']['url'], $hookBaseUrl, strlen($hookBaseUrl))) {
+            if (
+                array_key_exists('url', $hook['config'])
+                && 0 === strncmp($hook['config']['url'], $hookBaseUrl, strlen($hookBaseUrl))
+            ) {
                 $devKitHook = $hook;
 
                 break;
@@ -258,27 +272,37 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             $this->io->comment('Has to be created.');
 
             if ($this->apply) {
-                $this->githubClient->repo()->hooks()->create($this->githubGroup, $repositoryName, [
-                    'name' => 'web',
-                    'config' => $config,
-                    'events' => $events,
-                    'active' => true,
-                ]);
+                $this->githubClient->repo()->hooks()->create(
+                    $this->githubGroup,
+                    $repositoryName,
+                    [
+                        'name' => 'web',
+                        'config' => $config,
+                        'events' => $events,
+                        'active' => true,
+                    ]
+                );
                 $this->io->success('Hook created.');
             }
-        } elseif (count(array_diff_assoc($devKitHook['config'], $config))
+        } elseif (
+            count(array_diff_assoc($devKitHook['config'], $config))
             || count(array_diff($devKitHook['events'], $events))
             || !$devKitHook['active']
         ) {
             $this->io->comment('Has to be updated.');
 
             if ($this->apply) {
-                $this->githubClient->repo()->hooks()->update($this->githubGroup, $repositoryName, $devKitHook['id'], [
-                    'name' => 'web',
-                    'config' => $config,
-                    'events' => $events,
-                    'active' => true,
-                ]);
+                $this->githubClient->repo()->hooks()->update(
+                    $this->githubGroup,
+                    $repositoryName,
+                    $devKitHook['id'],
+                    [
+                        'name' => 'web',
+                        'config' => $config,
+                        'events' => $events,
+                        'active' => true,
+                    ]
+                );
                 $this->githubClient->repo()->hooks()->ping($this->githubGroup, $repositoryName, $devKitHook['id']);
                 $this->io->success('Hook updated.');
             }
@@ -305,8 +329,10 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             if (isset($projectConfig['branches'][$branch]['target_branch'])) {
                 $this->updateBranch($projectConfig['branches'][$branch]['target_branch'], $repositoryName);
             }
+            if (isset($projectConfig['branches'][$branch]['last_stable'])) {
+                $this->updateBranch($projectConfig['branches'][$branch]['last_stable'], $repositoryName);
+            }
         }
-
     }
 
     private function updateBranch($branch, $repositoryName)
@@ -334,7 +360,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $this->githubClient->repo()->protection()
             ->update($this->githubGroup, $repositoryName, $branch, $protectionConfig);
 
-        $this->io->comment('Branches protection applied to branch '.$branch);
+        $this->io->comment('Branches protection applied to branch ' . $branch);
     }
 
     /**
@@ -363,16 +389,19 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             'https://' . $this->githubUser . ':' . $this->githubAuthKey . '@github.com/' . $this->githubGroup . '/' . $repositoryName,
             $clonePath
         );
-        $git->config('user.name', $this->githubUser) ->config('user.email', $this->githubEmail);
+        $git->config('user.name', $this->githubUser)->config('user.email', $this->githubEmail);
         $branches = array_reverse($projectConfig['branches']);
 
         $previousBranch = null;
         $previousDevKit = null;
         while (($branchConfig = current($branches))) {
             // We have to fetch all branches on each step in case a PR is submitted.
-            $remoteBranches = array_map(function ($branch) {
-                return $branch['name'];
-            }, $this->githubClient->repos()->branches($this->githubGroup, $repositoryName));
+            $remoteBranches = array_map(
+                function ($branch) {
+                    return $branch['name'];
+                },
+                $this->githubClient->repos()->branches($this->githubGroup, $repositoryName)
+            );
 
             $currentBranch = key($branches);
             $currentDevKit = $currentBranch . '-dev-kit';
@@ -380,16 +409,13 @@ final class DispatchCommand extends AbstractNeedApplyCommand
 
             // A PR is already here for previous branch, do nothing on the current one.
             if (in_array($previousDevKit, $remoteBranches, true)) {
-                continue;
+                $this->io->comment('Do not build branch "'.$currentBranch.'" as its previous build "'.$previousDevKit.'" is still there.');
             }
+
             // If the previous branch is not merged into the current one, do nothing.
-            if ($previousBranch && $this->githubClient->repos()->commits()->compare(
-                $this->githubGroup,
-                $repositoryName,
-                $currentBranch,
-                $previousBranch
-            )['ahead_by']) {
-                continue;
+            $previousIsAhead = ($previousBranch && $this->githubClient->repos()->commits()->compare($this->githubGroup, $repositoryName, $currentBranch, $previousBranch)['ahead_by']);
+            if ($previousIsAhead) {
+                $this->io->comment('Do not build branch "'.$currentBranch.'" as its previous branch "'.$previousBranch.'" is not merged into this one.');
             }
 
             // Diff application
@@ -410,9 +436,9 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                 $git->checkout('-b', $currentDevKit);
             }
 
+            $this->setVersionConstraintsInComposer($clonePath, $projectConfig, $currentBranch);
             $this->renderFile($package, $repositoryName, 'project', $clonePath, $projectConfig, $currentBranch);
 
-            $this->setVersionConstraintsInComposer($clonePath, $projectConfig, $currentBranch);
 
             $git->add('.', ['all' => true])->getOutput();
             $diff = $git->diff('--color', '--cached')->getOutput();
@@ -423,17 +449,25 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                     $git->commit('DevKit updates')->push('-u', 'origin', $currentDevKit);
 
                     // If the Pull Request does not exists yet, create it.
-                    $pulls = $this->githubClient->pullRequests()->all($this->githubGroup, $repositoryName, [
-                        'state' => 'open',
-                        'head' => $currentDevKit,
-                    ]);
-                    if (0 === count($pulls)) {
-                        $this->githubClient->pullRequests()->create($this->githubGroup, $repositoryName, [
-                            'title' => 'DevKit updates for ' . $currentBranch . ' branch',
+                    $pulls = $this->githubClient->pullRequests()->all(
+                        $this->githubGroup,
+                        $repositoryName,
+                        [
+                            'state' => 'open',
                             'head' => $currentDevKit,
-                            'base' => $currentBranch,
-                            'body' => '',
-                        ]);
+                        ]
+                    );
+                    if (0 === count($pulls)) {
+                        $this->githubClient->pullRequests()->create(
+                            $this->githubGroup,
+                            $repositoryName,
+                            [
+                                'title' => 'DevKit updates for ' . $currentBranch . ' branch',
+                                'head' => $currentDevKit,
+                                'base' => $currentBranch,
+                                'body' => '',
+                            ]
+                        );
                     }
 
                     // Wait 200ms to be sure GitHub API is up to date with new pushed branch/PR.
@@ -477,8 +511,9 @@ final class DispatchCommand extends AbstractNeedApplyCommand
             return;
         }
         $notRendered = ['.', '..'];
-        $branchConfig = $projectConfig['branches'][$branchName];
-        if (!isset($branchConfig['unlimited_memory']) || !$branchConfig['unlimited_memory']) {
+        $branches = $projectConfig['branches'];
+        $currentBranchConfig = $branches[$branchName];
+        if (!isset($currentBranchConfig['unlimited_memory']) || !$currentBranchConfig['unlimited_memory']) {
             $notRendered[] = 'travis.php.ini';
         }
         if ('dir' === $localFileType) {
@@ -508,60 +543,42 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         $branchConfig = $projectConfig['branches'][$branchName];
         $localPathInfo = pathinfo($localPath);
         reset($projectConfig['branches']);
-        $stableVersions = $this->getStableVersions($package);
-        $latestStableVersion = array_shift($stableVersions);
-        $unstableBranch = key($projectConfig['branches']);
-        $stableBranch =  $branchConfig['target_branch'] ?: $unstableBranch;
-        $legacyBranch = next($projectConfig['branches']) ? key($projectConfig['branches']) : $stableBranch;
+        $unstableBranch = isset($branchConfig['next_unstable']) ? $branchConfig['next_unstable'].'-dev' : key($projectConfig['branches']);
+        $stableBranch = isset($branchConfig['last_stable']) ? $branchConfig['last_stable'] : $unstableBranch;
+        $replacements = array_merge(
+            $this->configs,
+            $projectConfig,
+            $branchConfig,
+            [
+                'package_title' => Inflector::ucwords(
+                    str_replace(
+                        ['cmf', '/', '-'],
+                        ['CMF', ' ', ' '],
+                        $package->getName()
+                    )
+                ),
+                'package_description' => $package->getDescription(),
+                'packagist_name' => $package->getName(),
+                'package_name' => $package->getName(),
+                'repository_name' => $repositoryName,
+                'current_branch' => $branchName,
+                'unstable_branch' => $unstableBranch,
+                'stable_branch' => $stableBranch,
+                'docs_path' => $branchConfig['docs_path'],
+                'tests_path' => str_replace([$this->packagistGroup . '/', '-bundle'], '', $package->getName()),
+            ]
+        );
         if (array_key_exists('extension', $localPathInfo) && 'twig' === $localPathInfo['extension']) {
             $distPath = dirname($distPath) . '/' . basename($distPath, '.twig');
-            file_put_contents($distPath, $this->twig->render($localPath, array_merge(
-                $this->configs,
-                $projectConfig,
-                $branchConfig,
-                [
-                    'package_title' => Inflector::ucwords(
-                        str_replace(['cmf', '/', '-'],
-                        ['CMF', ' ', ' '],
-                        $package->getName())
-                    ),
-                    'package_description' => $package->getDescription(),
-                    'packagist_name' => $package->getName(),
-                    'package_name' => $package->getName(),
-                    'repository_name' => $repositoryName,
-                    'current_branch' => $branchName,
-                    'unstable_branch' => $unstableBranch,
-                    'stable_version' => $latestStableVersion,
-                    'stable_branch' => $branchConfig['target_branch'],
-                    'legacy_branch' => $legacyBranch,
-                ]
-            )));
+            file_put_contents($distPath, $this->twig->render($localPath, $replacements));
         } else {
-            file_put_contents($distPath, str_replace([
-                '{{ package_title }}',
-                '{{ package_description }}',
-                '{{ packagist_name }}',
-                '{{ repository_name }}',
-                '{{ current_branch }}',
-                '{{ unstable_branch }}',
-                '{{ stable_version }}',
-                '{{ stable_branch }}',
-                '{{ legacy_branch }}',
-                '{{ docs_path }}',
-                '{{ website_path }}',
-            ], [
-                Inflector::ucwords(str_replace(['/', '-'], [' ', ' '], $package->getName())),
-                $package->getDescription(),
-                $package->getName(),
-                $repositoryName,
-                $branchName,
-                $unstableBranch,
-                $latestStableVersion,
-                $branchConfig['target_branch'],
-                $legacyBranch,
-                $branchConfig['docs_path'],
-                str_replace([$this->packagistGroup . '/', '-bundle'], '', $package->getName()),
-            ], $localContent));
+            foreach ($replacements as $key => $value) {
+                if (is_array($value)) {
+                    continue;
+                }
+                $localContent = str_replace('{{ '.$key.' }}', $value, $localContent);
+            }
+            file_put_contents($distPath, $localContent);
         }
         // Restore file permissions after content copy
         $this->fileSystem->chmod($distPath, fileperms($localPath));
@@ -578,14 +595,14 @@ final class DispatchCommand extends AbstractNeedApplyCommand
      */
     private function setVersionConstraintsInComposer($path, array $projectConfig, $currentBranch)
     {
-        $filePath = $path.'/composer.json';
+        $filePath = $path . '/composer.json';
         if (!$this->fileSystem->exists($filePath)) {
-            throw new \Exception('No composer.json found at: '.$filePath);
+            throw new \Exception('No composer.json found at: ' . $filePath);
         }
         $composerAsString = file_get_contents($filePath);
         $composerAsJson = json_decode($composerAsString, true);
         if (!isset($composerAsJson['require'])) {
-            throw new \Exception('no require path found in composer.json at: '.$filePath);
+            throw new \Exception('no require path found in composer.json at: ' . $filePath);
         }
 
         $branchConfig = $projectConfig['branches'][$currentBranch];
@@ -601,7 +618,7 @@ final class DispatchCommand extends AbstractNeedApplyCommand
                         $this->evaluateVersionString($branchConfig['versions']['symfony']),
                         '^2.8 | '
                     );
-                }  elseif (preg_match('/symfony\//', $package) && 'friendsofsymfony/jsrouting-bundle' !== $package) {
+                } elseif (preg_match('/symfony\//', $package) && 'friendsofsymfony/jsrouting-bundle' !== $package) {
                     $composerAsJson['require'][$package] = $this->evaluateVersionString($branchConfig['versions']['symfony']);
                 }
             }
@@ -632,11 +649,11 @@ final class DispatchCommand extends AbstractNeedApplyCommand
         }
 
         // takes care on correct target branch for master 
-        $targetMasterBranch = $branchConfig['target_branch'].'-dev';
+        $targetMasterBranch = $branchConfig['next_unstable'] . '-dev';
         if (!isset($composerAsJson['extra'])) {
             $composerAsJson['extra'] = ['branch-alias' => ['dev-master' => $targetMasterBranch]];
         } elseif (!isset($composerAsJson['extra']['branch-alias'])) {
-            $composerAsJson['extra'][branch-alias] = ['dev-master' => $targetMasterBranch];
+            $composerAsJson['extra'][branch - alias] = ['dev-master' => $targetMasterBranch];
         } elseif (!isset($composerAsJson['extra']['branch-alias']['dev-master'])) {
             $composerAsJson['extra']['branch-alias']['dev-master'] = $targetMasterBranch;
         }

@@ -4,17 +4,18 @@ seo-bundle:
       aware for Search Engine Optimisation (SEO).
   branches:
     master:
-      target_branch: 2.x
+      next_unstable: '3.0'
+      phpunit_version: "5.7.26"
       docs_path: 'bundles/seo'
       test_kernel: 'Symfony\Cmf\Bundle\SeoBundle\Tests\Fixtures\App\Kernel'
-      deprecation_warnings: "/.*each.*/"
-      php: ['7.1', '7.2']
+      deprecation_warnings: "weak"
+      php: ['7.2', '7.3']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
         functional_tests_orm: ~
       versions:
-        symfony: ['2.8.*',  '3.3.*', '3.4.*', '4.0.*']
+        symfony: ['3.4.*', '4.0.*', '4.1.*', '4.2.*']
 core-bundle:
   description: |
       The CoreBundle for the Symfony content management framework provides common functionality,
@@ -22,16 +23,18 @@ core-bundle:
       a twig extension and php templating helper to walk PHPCR-ODM trees and support for optional translated content.
   branches:
     master:
-      target_branch: 2.x
+      next_unstable: '3.0'
+      target_branch: "2.1"
+      phpunit_version: "5.7.26"
       docs_path: 'bundles/core'
       test_kernel: Symfony\Cmf\Bundle\CoreBundle\Tests\Fixtures\App\Kernel
-      deprecation_warnings: "/.*each.*/"
-      php: ['7.1', '7.2']
+      deprecation_warnings: "weak"
+      php: ['7.2', '7.3']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
+        symfony: ['3.4.*', '4.0.*', '4.1.*', '4.2.*']
 block-bundle:
   description: |
       The BlockBundle provides integration with
@@ -41,32 +44,37 @@ block-bundle:
       provides a few commonly used standard blocks, including the ability to edit them.
   branches:
     master:
-      target_branch: 2.x
+      next_unstable: '3.0'
+      phpunit_version: "5.7.26"
+      target_branch: "2.1"
       unlimited_memory: true
       docs_path: 'bundles/block'
       test_kernel: Symfony\Cmf\Bundle\BlockBundle\Tests\Fixtures\App\Kernel
-      deprecation_warnings: "/.*each.*/"
-      php: ['7.1', '7.2']
+      deprecation_warnings: "weak"
+      php: ['7.2', '7.3']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
+        symfony: ['3.4.*', '4.0.*', '4.1.*', '4.2.*']
+    
 menu-bundle:
   description: |
       The MenuBundle provides menus from a doctrine object manager with the help of KnpMenuBundle.
   branches:
     master:
-      target_branch: 2.x
+      next_unstable: '3.0'
+      phpunit_version: "5.7.26"
+      target_branch: "2.2"
       docs_path: 'bundles/menu'
-      deprecation_warnings: "/.*each.*/"
+      deprecation_warnings: "weak"
       test_kernel: Symfony\Cmf\Bundle\MenuBundle\Tests\Fixtures\App\Kernel
-      php: ['7.1', '7.2']
+      php: ['7.2', '7.3']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
+        symfony: ['3.4.*', '4.0.*', '4.1.*', '4.2.*']
 routing-bundle:
   description: |
       The RoutingBundle enables the
@@ -75,17 +83,21 @@ routing-bundle:
       controller for redirection routes.
   branches:
     master:
-      target_branch: 2.x
+      next_unstable: '3.0'
+      last_stable: "2.1"
+      target_branch: "master"
+      phpunit_version: "5.7.26"
+      minimum_stability: dev
       docs_path: 'bundles/routing'
-      deprecation_warnings: "/.*each.*/"
+      deprecation_warnings: "weak"
       test_kernel: Symfony\Cmf\Bundle\RoutingBundle\Tests\Fixtures\App\Kernel
-      php: ['7.1', '7.2']
+      php: ['7.2', '7.3']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
         functional_tests_orm: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
+        symfony: ['3.4.*', '4.0.*', '4.1.*', '4.2.*']
         
 routing:
   description: |
@@ -103,58 +115,74 @@ routing:
       when building Symfony full stack applications.
   branches:
     master:
-      target_branch: 2.x
+      next_unstable: '3.0'
+      last_stable: "2.1"
+      target_branch: "master"
+      phpunit_version: "5.7.26"
+      minimum_stability: dev
       docs_path: 'components/routing'
-      deprecation_warnings: "/.*each.*/"
-      php: ['7.1', '7.2']
+      deprecation_warnings: "weak"
+      php: ['7.2', '7.3']
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*',]
+        symfony: ['3.4.*', '4.0.*', '4.1.*', '4.2.*']
 routing-auto:
   description: |
       This component automatically creates and manages routes for configured persisted document classes.
       This library contains all implementation agnostic code.
   branches:
     master:
-      target_branch: 2.x
+      next_unstable: '3.0'
+      last_stable: "2.1"
+      target_branch: "master"
+      phpunit_version: "5.7.26"
+      minimum_stability: dev
       docs_path: 'components/routing'
-      deprecation_warnings: "/.*each.*/"
-      php: ['7.1', '7.2']
+      deprecation_warnings: "weak"
+      php: ['7.2', '7.3']
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
+        symfony: [ '3.4.*', '4.0.*', '4.1.*', '4.2.*']
 content-bundle:
   description: |
       The ContentBundle provides a document for static content and the controller to render it.
   branches:
     master:
-      target_branch: 2.x
+      next_unstable: '3.0'
+      last_stable: "2.1"
+      target_branch: "master"
+      phpunit_version: "5.7.26"
+      minimum_stability: dev
       docs_path: 'bundles/routing'
-      deprecation_warnings: "/.*each.*/"
+      deprecation_warnings: "weak"
       test_kernel: Symfony\Cmf\Bundle\ContentBundle\Tests\Fixtures\App\Kernel
-      php: ['7.1', '7.2']
+      php: ['7.2', '7.3']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
+        symfony: ['3.4.*', '4.0.*', '4.1.*', '4.2.*']
 routing-auto-bundle:
   description: |
       This bundle automatically creates and manages routes for configured persisted document classes.
   branches:
     master:
-      target_branch: 1.x
+      next_unstable: '3.0'
+      last_stable: "2.1"
+      target_branch: "master"
+      phpunit_version: "5.7.26"
+      minimum_stability: dev
       docs_path: 'bundles/routing-auto-bundle'
       test_kernel: Symfony\Cmf\Bundle\RoutingAutoBundle\Tests\Fixtures\App\Kernel
-      deprecation_warnings: "/.*each.*/"
-      php: ['7.1', '7.2']
+      deprecation_warnings: "weak"
+      php: ['7.2', '7.3']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
+        symfony: ['3.4.*', '4.0.*', '4.1.*', '4.2.*']
 resource-rest-bundle:
   description: |
       This Bundle provides a REST API to Puli resources as provided by the CmfResource component.
@@ -172,15 +200,19 @@ resource-rest-bundle:
 
   branches:
     master:
-      target_branch: 1.0
+      next_unstable: '2.0'
+      last_stable: "1.1"
+      target_branch: "master"
+      phpunit_version: "5.7.26"
+      minimum_stability: dev
       docs_path: 'bundles/resource-rest'
-      deprecation_warnings: "/.*each.*/"
+      deprecation_warnings: "weak"
       test_kernel: Symfony\Cmf\Bundle\ResourceRestBundle\Tests\Fixtures\App\Kernel
-      php: ['7.1', '7.2']
+      php: ['7.2', '7.3']
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
+        symfony: ['3.4.*', '4.0.*', '4.1.*', '4.2.*']
 resource-bundle:
   description: |
       This bundle provides *object* resource location services based on Puli.
@@ -203,21 +235,28 @@ resource-bundle:
 
   branches:
     master:
-      target_branch: 1.0
+      next_unstable: '2.0'
+      last_stable: "1.1"
+      target_branch: "master"
+      phpunit_version: "5.7.26"
+      minimum_stability: dev
       docs_path: 'bundles/resource-rest'
-      deprecation_warnings: "/.*each.*/"
+      deprecation_warnings: "weak"
       test_kernel: Symfony\Cmf\Bundle\ResourceBundle\Tests\Fixtures\App\Kernel
-      php: ['7.1', '7.2']
+      php: ['7.2', '7.3']
       make_tasks:
         unit_tests: ~
         functional_tests_phpcr: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
+        symfony: ['3.4.*', '4.0.*', '4.1.*', '4.2.*']
 sonata-phpcr-admin-integration-bundle:
   description: ""
   branches:
     master:
-      target_branch: 1.x
+      next_unstable: '2.0'
+      last_stable: "1.1"
+      target_branch: "master"
+      phpunit_version: "5.7.26"
       minimum_stability: dev
       docs_path: 'bundles/sonata-phpcr-admin-integration-bundle'
       test_kernel: Symfony\Cmf\Bundle\SonataPhpcrAdminIntegrationBundle\Tests\Fixtures\App\Kernel
@@ -227,7 +266,7 @@ sonata-phpcr-admin-integration-bundle:
         unit_tests: ~
         functional_tests_phpcr: ~
       versions:
-        symfony: ['2.8.*','3.3.*', '3.4.*', '4.0.*']
+        symfony: ['3.4.*', '4.0.*', '4.1.*', '4.2.*']
 resource:
   excluded_files:
       - .travis.yml.twig
@@ -240,10 +279,14 @@ resource:
 
   branches:
     master:
-      target_branch: 1.0
+      next_unstable: '3.0'
+      last_stable: "1.1"
+      target_branch: "master"
+      phpunit_version: "5.7.26"
+      minimum_stability: dev
       docs_path: 'components/resource'
-      deprecation_warnings: "/.*each.*/"
-      php: ['7.1', '7.2']
+      deprecation_warnings: "weak"
+      php: ['7.2', '7.3']
       make_tasks:
         unit_tests: ~
 testing:
@@ -253,15 +296,18 @@ testing:
 
   branches:
     master:
-      target_branch: 2.x
+      next_unstable: '3.0'
+      last_stable: "2.1"
+      target_branch: "master"
+      phpunit_version: "5.7.26"
       minimum_stability: dev
       docs_path: 'components/testing'
-      deprecation_warnings: "/.*each.*/"
-      php: ['5.6','7.0','7.1', '7.2']
+      deprecation_warnings: "weak"
+      php: ['7.2', '7.3']
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.3.*', '3.4.*', '4.0.*']
+        symfony: ['3.4.*', '4.0.*', '4.1.*', '4.2.*']
 tree-browser-bundle:
   excluded_files:
       - .travis.yml.twig
@@ -270,11 +316,15 @@ tree-browser-bundle:
 
   branches:
     master:
-      target_branch: 2.x
+      next_unstable: '3.0'
+      last_stable: "2.1"
+      target_branch: "master"
+      phpunit_version: "5.7.26"
+      minimum_stability: dev
       docs_path: 'bundle/tree-browser-bundle'
-      deprecation_warnings: "/.*each.*/"
-      php: ['7.1', '7.2']
+      deprecation_warnings: "weak"
+      php: ['7.2', '7.3']
       make_tasks:
         unit_tests: ~
       versions:
-        symfony: ['2.8.*', '3.3', '3.4.*', '4.0.*']
+        symfony: ['3.4.*', '4.0.*', '4.1.*', '4.2.*']
