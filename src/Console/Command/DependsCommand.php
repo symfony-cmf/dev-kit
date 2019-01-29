@@ -27,7 +27,7 @@ final class DependsCommand extends AbstractCommand
     {
         $this
             ->setName('depends')
-            ->setDescription('Show internal sonata dependencies of each project.')
+            ->setDescription('Show internal symfony-cmf or symfony dependencies of each project.')
             ->addOption('branch-depth', null, InputOption::VALUE_OPTIONAL, 'Number of branches to show.', 2)
         ;
     }
@@ -40,7 +40,7 @@ final class DependsCommand extends AbstractCommand
         $branchDepth = intval($input->getOption('branch-depth'));
 
         foreach ($this->configs['projects'] as $name => $config) {
-            $package = $this->packagistClient->get(static::PACKAGIST_GROUP.'/'.$name);
+            $package = $this->packagistClient->get($this->packagistGroup.'/'.$name);
             $this->io->title($package->getName());
 
             $bd = 0;
@@ -54,7 +54,7 @@ final class DependsCommand extends AbstractCommand
                     continue;
                 }
                 foreach ($version->getRequire() as $packageName => $constraint) {
-                    if (!strstr($packageName, 'sonata-project/')) {
+                    if (!strstr($packageName, 'symfony-cmf/') && !strstr($packageName, 'symfony/')) {
                         continue;
                     }
                     $this->io->writeln($packageName.':'.$constraint);

@@ -48,18 +48,33 @@ class ProjectsConfiguration implements ConfigurationInterface
                     ->normalizeKeys(false)
                     ->prototype('array')
                         ->children()
-                            ->arrayNode('excluded_files')->prototype('scalar')->defaultValue(array())->end()->end()
+                            ->arrayNode('excluded_files')->prototype('scalar')->defaultValue([])->end()->end()
                             ->booleanNode('docs_target')->defaultTrue()->end()
+                            ->scalarNode('description')->defaultValue('')->end()
                             ->arrayNode('branches')
                                 ->normalizeKeys(false)
-                                ->defaultValue(array())
+                                ->defaultValue([])
                                 ->prototype('array')
                                     ->children()
-                                        ->arrayNode('php')->prototype('scalar')->defaultValue(array())->end()->end()
-                                        ->arrayNode('services')->prototype('scalar')->defaultValue(array())->end()->end()
+                                        ->scalarNode('next_unstable')->defaultValue(null)->end()
+                                        ->scalarNode('last_stable')->defaultValue(null)->end()
+                                        ->scalarNode('target_branch')->defaultValue('master')->end()
+                                        ->booleanNode('unlimited_memory')->defaultFalse()->end()
+                                        ->scalarNode('minimum_stability')->defaultValue('prod')->end()
+                                        ->arrayNode('php')->prototype('scalar')->defaultValue([])->end()->end()
+                                        ->arrayNode('services')->prototype('scalar')->defaultValue([])->end()->end()
                                         ->scalarNode('target_php')->defaultNull()->end()
                                         ->append($this->addVersionsNode())
+                                        ->append($this->addFailingVersionsNode())
+                                        ->scalarNode('test_kernel')->defaultNull()->end()
+                                        ->scalarNode('deprecation_warnings')->defaultValue(24)->end()
                                         ->scalarNode('docs_path')->defaultValue('Resources/doc')->end()
+                                        ->scalarNode('docs_extra')->defaultValue('')->end()
+                                        ->scalarNode('phpunit_version')->defaultValue('5.7.26')->end()
+                                        ->arrayNode('make_tasks')
+                                            ->prototype('scalar')
+                                            ->defaultValue([])
+                                        ->end()
                                     ->end()
                                 ->end()
                             ->end()
@@ -80,7 +95,23 @@ class ProjectsConfiguration implements ConfigurationInterface
         $childrenNode = $node->children();
 
         foreach ($this->devKitConfigs['packages'] as $key => $name) {
-            $childrenNode->arrayNode($key)->prototype('scalar')->defaultValue(array())->end()->end();
+            $childrenNode->arrayNode($key)->prototype('scalar')->defaultValue([])->end()->end();
+        }
+
+        $childrenNode->end();
+
+        return $node;
+    }
+
+    private function addFailingVersionsNode()
+    {
+        $builder = new TreeBuilder();
+        $node = $builder->root('failing_allowed_versions');
+
+        $childrenNode = $node->children();
+
+        foreach ($this->devKitConfigs['packages'] as $key => $name) {
+            $childrenNode->arrayNode($key)->prototype('scalar')->defaultValue([])->end()->end();
         }
 
         $childrenNode->end();

@@ -22,16 +22,19 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Yaml\Yaml;
+use Composer\Semver;
+use Packagist\Api\Result\Package\Version;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
 abstract class AbstractCommand extends Command
 {
-    const GITHUB_GROUP = 'sonata-project';
-    const GITHUB_USER = 'SonataCI';
-    const GITHUB_EMAIL = 'thomas+ci@sonata-project.org';
-    const PACKAGIST_GROUP = 'sonata-project';
+    protected $githubGroup;
+    protected $githubUser;
+    protected $githubEmail;
+    protected $packagistGroup;
+    protected $homepage;
 
     /**
      * @var SymfonyStyle
@@ -76,17 +79,20 @@ abstract class AbstractCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
 
         $processor = new Processor();
-        $devKitConfigs = $processor->processConfiguration(new DevKitConfiguration(), array(
-            'sonata' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/dev-kit.yml')),
-        ));
-        $projectsConfigs = $processor->processConfiguration(new ProjectsConfiguration($devKitConfigs), array(
-            'sonata' => array('projects' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/projects.yml'))),
-        ));
+        $devKitConfigs = $processor->processConfiguration(new DevKitConfiguration(), [
+            'cmf' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/dev-kit.yml')),
+        ]);
+        $projectsConfigs = $processor->processConfiguration(new ProjectsConfiguration($devKitConfigs), [
+            'cmf' => ['projects' => Yaml::parse(file_get_contents(__DIR__.'/../../../config/projects.yml'))],
+        ]);
         $this->configs = array_merge($devKitConfigs, $projectsConfigs);
 
-        if (getenv('GITHUB_OAUTH_TOKEN')) {
-            $this->githubAuthKey = getenv('GITHUB_OAUTH_TOKEN');
-        }
+        $this->githubAuthKey = getenv('GITHUB_OAUTH_TOKEN');
+        $this->githubGroup = getenv('GITHUB_GROUP');
+        $this->githubUser = getenv('GITHUB_USER');
+        $this->githubEmail = getenv('GITHUB_EMAIL');
+        $this->packagistGroup = getenv('PACKAGIST_GROUP');
+        $this->homepage = getenv('HOMEPAGE');
 
         $this->packagistClient = new \Packagist\Api\Client();
 
@@ -111,5 +117,30 @@ abstract class AbstractCommand extends Command
         $repositoryArray = explode('/', $package->getRepository());
 
         return str_replace('.git', '', end($repositoryArray));
+    }
+
+    /**
+     * @param Packaage $package
+     * 
+     * @return []
+     */
+    final protected function getStableVersions(Package $package): array
+    {
+        $stableVersions = array_filter(
+            array_keys($package->getVersions()),
+            function ($version) {
+                try {
+                    if ('stable' !== Semver\VersionParser::parseStability($version)) {
+                        return false;
+                    }
+                } catch (\Exception $e) {
+                    return false;
+                }
+
+                return true;
+            }
+        );
+
+        return Semver\Semver::rsort($stableVersions);
     }
 }
